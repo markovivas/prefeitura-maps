@@ -1,248 +1,64 @@
 -- ============================================================================
--- MVP Navegação Indoor da Prefeitura - Carga Inicial de Demonstração
+-- Prefeitura Municipal de Três Corações - MG (Seed Oficial: projeto.dwg + TABELA.md)
 -- ============================================================================
 
--- 1. Prédio de Demonstração: Prefeitura Municipal de Três Corações - MG
-INSERT INTO buildings (id, name, address, description, latitude, longitude, footprint)
-VALUES (
-    1,
-    'Prefeitura Municipal de Três Corações',
-    'Av. Brasil, 225 - Jardim América, Três Corações - MG',
-    'Centro Administrativo Dr. Astolpho Gazzola — Sede administrativa e central de atendimento ao cidadão da Prefeitura Municipal de Três Corações.',
-    -21.670830,
-    -45.269030,
-    ST_GeomFromText('POLYGON((-45.26933 -21.67103, -45.26873 -21.67103, -45.26873 -21.67063, -45.26933 -21.67063, -45.26933 -21.67103))', 4326)
-) ON CONFLICT (id) DO NOTHING;
+INSERT INTO buildings (id, name, address, description, latitude, longitude, footprint) VALUES (
+  1, 'Prefeitura Municipal de Três Corações', 'Av. Brasil, 225 - Jardim América, Três Corações - MG', 'Centro Administrativo Dr. Astolpho Gazzola — Sede administrativa e central de atendimento ao cidadão da Prefeitura Municipal de Três Corações.', -21.670830, -45.269030, ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2695445, -21.670545], [-45.2692872, -21.6710523], [-45.2689639, -21.6709106], [-45.2689851, -21.6708688], [-45.2689034, -21.670833], [-45.2688805, -21.6708782], [-45.2688122, -21.6708482], [-45.2690924, -21.670296], [-45.2691872, -21.6703375], [-45.2691658, -21.6703797], [-45.2689727, -21.6707602], [-45.2690744, -21.6708047], [-45.2692675, -21.6704241], [-45.2693533, -21.6704617], [-45.2691604, -21.6708418], [-45.2691793, -21.67085], [-45.2691702, -21.6708681], [-45.2692598, -21.6709074], [-45.269462, -21.6705089], [-45.2695445, -21.670545]]]}'), 4326)
+) ON CONFLICT (id) DO UPDATE SET footprint = EXCLUDED.footprint;
 
--- 2. Andares: Térreo (level 0) e 1º Andar (level 1)
-INSERT INTO floors (id, building_id, name, level, outline, corridor_geometry)
-VALUES
-(
-    1,
-    1,
-    'Térreo',
-    0,
-    ST_GeomFromText('POLYGON((-45.26933 -21.67103, -45.26873 -21.67103, -45.26873 -21.67063, -45.26933 -21.67063, -45.26933 -21.67103))', 4326),
-    ST_GeomFromText('POLYGON((-45.26910 -21.67095, -45.26896 -21.67095, -45.26896 -21.67072, -45.26910 -21.67072, -45.26910 -21.67095))', 4326)
-),
-(
-    2,
-    1,
-    '1º Andar',
-    1,
-    ST_GeomFromText('POLYGON((-45.26933 -21.67103, -45.26873 -21.67103, -45.26873 -21.67063, -45.26933 -21.67063, -45.26933 -21.67103))', 4326),
-    ST_GeomFromText('POLYGON((-45.26910 -21.67095, -45.26896 -21.67095, -45.26896 -21.67072, -45.26910 -21.67072, -45.26910 -21.67095))', 4326)
-) ON CONFLICT (id) DO NOTHING;
+INSERT INTO floors (id, building_id, name, level, outline) VALUES
+  (1, 1, 'Térreo', 0, ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2695445, -21.670545], [-45.2692872, -21.6710523], [-45.2689639, -21.6709106], [-45.2689851, -21.6708688], [-45.2689034, -21.670833], [-45.2688805, -21.6708782], [-45.2688122, -21.6708482], [-45.2690924, -21.670296], [-45.2691872, -21.6703375], [-45.2691658, -21.6703797], [-45.2689727, -21.6707602], [-45.2690744, -21.6708047], [-45.2692675, -21.6704241], [-45.2693533, -21.6704617], [-45.2691604, -21.6708418], [-45.2691793, -21.67085], [-45.2691702, -21.6708681], [-45.2692598, -21.6709074], [-45.269462, -21.6705089], [-45.2695445, -21.670545]]]}'), 4326)),
+  (2, 1, '1º Andar', 1, ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2695445, -21.670545], [-45.2692872, -21.6710523], [-45.2689639, -21.6709106], [-45.2689851, -21.6708688], [-45.2689034, -21.670833], [-45.2688805, -21.6708782], [-45.2688122, -21.6708482], [-45.2690924, -21.670296], [-45.2691872, -21.6703375], [-45.2691658, -21.6703797], [-45.2689727, -21.6707602], [-45.2690744, -21.6708047], [-45.2692675, -21.6704241], [-45.2693533, -21.6704617], [-45.2691604, -21.6708418], [-45.2691793, -21.67085], [-45.2691702, -21.6708681], [-45.2692598, -21.6709074], [-45.269462, -21.6705089], [-45.2695445, -21.670545]]]}'), 4326))
+ON CONFLICT (id) DO UPDATE SET outline = EXCLUDED.outline;
 
--- 3. Nós de Navegação (Térreo: IDs 1..11 | 1º Andar: IDs 12..22)
-INSERT INTO routing_nodes (id, floor_id, code, name, node_type, geometry)
-VALUES
--- Térreo
-(1,  1, 'N0_REC',  'Recepção Principal',                'entrance', ST_SetSRID(ST_MakePoint(-45.26903, -21.67068), 4326)),
-(2,  1, 'N0_C1',   'Corredor Norte (Térreo)',           'corridor', ST_SetSRID(ST_MakePoint(-45.26903, -21.67078), 4326)),
-(3,  1, 'N0_101',  'Acesso Sala 101 - Dívida Ativa',    'room',     ST_SetSRID(ST_MakePoint(-45.26912, -21.67078), 4326)),
-(4,  1, 'N0_102',  'Acesso Sala 102 - ISS',             'room',     ST_SetSRID(ST_MakePoint(-45.26894, -21.67078), 4326)),
-(5,  1, 'N0_C2',   'Corredor Sul (Térreo)',             'corridor', ST_SetSRID(ST_MakePoint(-45.26903, -21.67089), 4326)),
-(6,  1, 'N0_103',  'Acesso Sala 103 - SEPLAN',          'room',     ST_SetSRID(ST_MakePoint(-45.26912, -21.67089), 4326)),
-(7,  1, 'N0_104',  'Acesso Sala 104 - Receita Federal', 'room',     ST_SetSRID(ST_MakePoint(-45.26894, -21.67089), 4326)),
-(8,  1, 'N0_C3',   'Hall do Elevador (Térreo)',         'corridor', ST_SetSRID(ST_MakePoint(-45.26903, -21.67095), 4326)),
-(9,  1, 'N0_ELEV', 'Elevador (Térreo)',                 'elevator', ST_SetSRID(ST_MakePoint(-45.26903, -21.67098), 4326)),
-(10, 1, 'N0_ESC',  'Escada (Térreo)',                   'stairs',   ST_SetSRID(ST_MakePoint(-45.26891, -21.67098), 4326)),
-(11, 1, 'N0_WC',   'Sanitários (Térreo)',               'restroom', ST_SetSRID(ST_MakePoint(-45.26915, -21.67098), 4326)),
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '101', 'Dívida Ativa', 'Secretaria de Finanças', 'service', 'Atendimento de Dívida Ativa, parcelamentos e regularização fiscal (SIM - 101).', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2689105, -21.6707966], [-45.2688697, -21.6708755], [-45.2688215, -21.6708545], [-45.2688622, -21.6707757], [-45.2689105, -21.6707966]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '102', 'ISS', 'Secretaria de Finanças', 'service', 'Imposto Sobre Serviços (ISS), tributos mobiliários e atendimento SEFIN.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2689499, -21.6707206], [-45.2689105, -21.6707966], [-45.2688524, -21.6707714], [-45.2688917, -21.6706954], [-45.2689499, -21.6707206]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '103', 'Alfredo, Lena', 'Secretaria de Planejamento', 'service', 'Protocolo e atendimento de Fiscalização — Secretaria de Planejamento.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2689633, -21.6706945], [-45.2689499, -21.6707206], [-45.2688917, -21.6706954], [-45.2689052, -21.6706693], [-45.2689633, -21.6706945]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '104', 'PAV — Posto de Atendimento da Receita Federal', 'Secretaria de Finanças', 'service', 'Posto de Atendimento Virtual da Receita Federal (VAF / RFB).', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2689765, -21.6706691], [-45.2689633, -21.6706945], [-45.2689052, -21.6706693], [-45.2689183, -21.6706439], [-45.2689765, -21.6706691]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '105', 'Lanchonete da Prefeitura — Público', 'Atendimento Geral / Apoio', 'facility', 'Lanchonete da Prefeitura voltada ao atendimento do público.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2690157, -21.6705933], [-45.2689896, -21.6706437], [-45.2689315, -21.6706185], [-45.2689576, -21.6705681], [-45.2690157, -21.6705933]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '106', 'Lanchonete da Prefeitura — Funcionários', 'Apoio Interno', 'facility', 'Copa e cozinha da lanchonete para funcionários.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2690286, -21.6705683], [-45.2690157, -21.6705933], [-45.2689576, -21.6705681], [-45.2689705, -21.6705431], [-45.2690286, -21.6705683]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '107', 'Antigo Café — Refeitório', 'Apoio Interno', 'facility', 'Espaço de cantina e refeitório interno.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2690549, -21.6705175], [-45.2690286, -21.6705683], [-45.2689705, -21.6705431], [-45.2689968, -21.6704923], [-45.2690549, -21.6705175]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '108', 'Fiscalização Obras — Posturas', 'Secretaria de Planejamento', 'service', 'Fiscalização de Obras, Posturas e aprovação de projetos.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691071, -21.6704166], [-45.2690549, -21.6705175], [-45.2689968, -21.6704923], [-45.2690489, -21.6703914], [-45.2691071, -21.6704166]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '109', 'Arquivo RH', 'Secretaria de Recursos Humanos', 'admin', 'Acervo e arquivo da Secretaria de Recursos Humanos (SARH).', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691332, -21.6703662], [-45.2691071, -21.6704166], [-45.2690489, -21.6703914], [-45.269075, -21.670341], [-45.2691332, -21.6703662]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '110', 'IPTU', 'Secretaria de Finanças', 'service', 'Atendimento de IPTU, ISS e Minas Fácil.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691043, -21.6708771], [-45.2690624, -21.6709581], [-45.2689442, -21.670907], [-45.2689862, -21.6708259], [-45.2691043, -21.6708771]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '111', 'Recepção', 'Atendimento ao Cidadão', 'reception', 'Recepção central e orientação ao público no pavimento térreo.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691425, -21.6708033], [-45.2691311, -21.6708253], [-45.2690734, -21.6708003], [-45.2690848, -21.6707783], [-45.2691425, -21.6708033]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '112', 'Sala da Faxina', 'Serviços Gerais / Apoio', 'facility', 'Copa e apoio de limpeza / manutenção.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691558, -21.6707775], [-45.2691425, -21.6708033], [-45.2690848, -21.6707783], [-45.2690981, -21.6707525], [-45.2691558, -21.6707775]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '113', 'Banheiros (Feminino)', 'Sanitários Públicos', 'facility', 'Sanitários femininos e acessíveis do pavimento térreo.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691688, -21.6707525], [-45.2691558, -21.6707775], [-45.2690981, -21.6707525], [-45.2691111, -21.6707275], [-45.2691688, -21.6707525]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '114', 'Banheiros (Masculino)', 'Sanitários Públicos', 'facility', 'Sanitários masculinos e acessíveis do pavimento térreo.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691817, -21.6707274], [-45.2691688, -21.6707525], [-45.2691111, -21.6707275], [-45.269124, -21.6707024], [-45.2691817, -21.6707274]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '115', 'Secretaria da Saúde', 'Secretaria da Saúde', 'service', 'Atendimento e setor administrativo no pavimento térreo.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2692209, -21.6706516], [-45.2691817, -21.6707274], [-45.269124, -21.6707024], [-45.2691632, -21.6706266], [-45.2692209, -21.6706516]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '116', 'Departamento de Compras', 'Secretaria de Governo', 'admin', 'Departamento de Compras e suprimentos — Secretaria de Governo.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2692602, -21.6705758], [-45.2692209, -21.6706516], [-45.2691632, -21.6706266], [-45.2692025, -21.6705508], [-45.2692602, -21.6705758]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '117', 'Redação', 'Secretaria de Governo', 'admin', 'Setor de Redação e Licitações — Secretaria de Governo.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2692994, -21.6705], [-45.2692602, -21.6705758], [-45.2692025, -21.6705508], [-45.2692417, -21.670475], [-45.2692994, -21.6705]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '118', 'Arquivo Redação', 'Secretaria de Governo', 'admin', 'Arquivo de Redação e Licitação — Secretaria de Governo.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2693255, -21.6704496], [-45.2692994, -21.6705], [-45.2692417, -21.670475], [-45.2692678, -21.6704246], [-45.2693255, -21.6704496]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '119', 'Arquivo Finanças', 'Secretaria de Finanças', 'admin', 'Arquivo de Contabilidade e Finanças.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2692133, -21.6709243], [-45.2691713, -21.6710054], [-45.2691132, -21.6709802], [-45.2691551, -21.6708991], [-45.2692133, -21.6709243]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '120', 'Contabilidade Finanças', 'Secretaria de Finanças', 'admin', 'Setor de Contabilidade da Secretaria de Finanças.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2692705, -21.6709491], [-45.2692286, -21.6710302], [-45.2691713, -21.6710054], [-45.2692133, -21.6709243], [-45.2692705, -21.6709491]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '121', 'Secretaria Municipal de Finanças — Tesouraria', 'Secretaria de Finanças', 'service', 'Gabinete da Secretaria Municipal de Finanças e Tesouraria.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2693507, -21.6709295], [-45.2692858, -21.671055], [-45.2692286, -21.6710302], [-45.2692934, -21.6709047], [-45.2693507, -21.6709295]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '122', 'Setor Financeiro — Compras', 'Secretaria de Desenvolvimento Social', 'service', 'Setor Financeiro e de Compras da Secretaria de Desenvolvimento Social (SEDESO).', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2693999, -21.6708344], [-45.2693507, -21.6709295], [-45.2692934, -21.6709047], [-45.2693427, -21.6708096], [-45.2693999, -21.6708344]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '123', 'Setor Administrativo', 'Secretaria de Desenvolvimento Social', 'service', 'Setor Administrativo e Conselhos — Secretaria de Desenvolvimento Social (SEDESO).', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2694441, -21.6707489], [-45.2693999, -21.6708344], [-45.2693427, -21.6708096], [-45.2693869, -21.6707241], [-45.2694441, -21.6707489]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '124', 'Folha de Pagamento', 'Secretaria de Administração e Recursos Humanos', 'admin', 'Setor de Folha de Pagamento — Secretaria de Administração e Recursos Humanos (SARH).', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2694967, -21.6706472], [-45.2694441, -21.6707489], [-45.2693869, -21.6707241], [-45.2694395, -21.6706224], [-45.2694967, -21.6706472]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (1, '125', 'Secretaria de Administração e Recursos Humanos', 'Secretaria de Administração e Recursos Humanos', 'service', 'Departamento Pessoal e atendimento ao servidor — SARH.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2695489, -21.6705464], [-45.2694967, -21.6706472], [-45.2694395, -21.6706224], [-45.2694917, -21.6705216], [-45.2695489, -21.6705464]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '201', 'Gabinete da Vice-Prefeita', 'Gabinete da Vice-Prefeita', 'admin', 'Recepção e Gabinete da Vice-Prefeita.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2690467, -21.6708522], [-45.2690047, -21.6709333], [-45.2689406, -21.6709055], [-45.2689826, -21.6708244], [-45.2690467, -21.6708522]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '202', 'SECOM', 'Secretaria de Comunicações', 'admin', 'Secretaria de Comunicações (SECOM) / SEMCI.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2689826, -21.6708244], [-45.2689406, -21.6709055], [-45.2688225, -21.6708543], [-45.2688644, -21.6707732], [-45.2689826, -21.6708244]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '203', 'Secretaria de Controle Interno', 'Secretaria de Controle Interno', 'admin', 'Controladoria e Secretaria Municipal de Controle Interno.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2689371, -21.6707455], [-45.2689121, -21.6707939], [-45.2688539, -21.6707687], [-45.268879, -21.6707203], [-45.2689371, -21.6707455]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '204', 'T.I.', 'Tecnologia da Informação', 'admin', 'Setor de Tecnologia da Informação (T.I.) e suporte de sistemas.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2689895, -21.6706442], [-45.2689371, -21.6707455], [-45.268879, -21.6707203], [-45.2689313, -21.670619], [-45.2689895, -21.6706442]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '205', 'Departamento de Compras', 'Secretaria da Saúde', 'admin', 'Departamento de Compras da Secretaria Municipal da Saúde.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2690287, -21.6705684], [-45.2689895, -21.6706442], [-45.2689313, -21.670619], [-45.2689706, -21.6705432], [-45.2690287, -21.6705684]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '206', 'Atenção Primária — Saúde Bucal', 'Secretaria da Saúde', 'service', 'Coordenação de Atenção Primária e Saúde Bucal — Secretaria da Saúde.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.269055, -21.6705176], [-45.2690287, -21.6705684], [-45.2689706, -21.6705432], [-45.2689968, -21.6704924], [-45.269055, -21.6705176]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '207', 'Faturamento', 'Secretaria da Saúde', 'admin', 'Setor de Faturamento — Secretaria Municipal da Saúde.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691209, -21.6703901], [-45.269055, -21.6705176], [-45.2689968, -21.6704924], [-45.2690628, -21.6703649], [-45.2691209, -21.6703901]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '208', 'Sala 208', '—', 'admin', 'Sala técnica / estúdio no 1º pavimento.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691612, -21.6703784], [-45.2691488, -21.6704022], [-45.2690628, -21.6703649], [-45.2690751, -21.6703411], [-45.2691612, -21.6703784]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '209', 'Fiscalização Obras e Posturas', 'Secretaria de Planejamento', 'service', 'Fiscalização de Obras e Posturas / Arquivo no 1º pavimento.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691559, -21.6707776], [-45.2691294, -21.6708288], [-45.2690717, -21.6708038], [-45.2690982, -21.6707526], [-45.2691559, -21.6707776]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '210', 'Procuradoria — Advogados', 'Procuradoria', 'admin', 'Sala dos Advogados — Procuradoria Geral do Município.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.269221, -21.6706517], [-45.2691818, -21.6707276], [-45.2691241, -21.6707026], [-45.2691633, -21.6706267], [-45.269221, -21.6706517]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '211', 'Banheiros (Feminino)', 'Sanitários Públicos', 'facility', 'Sanitários femininos do 1º andar.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691688, -21.6707526], [-45.2691559, -21.6707776], [-45.2690982, -21.6707526], [-45.2691111, -21.6707276], [-45.2691688, -21.6707526]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '212', 'Banheiros (Masculino)', 'Sanitários Públicos', 'facility', 'Sanitários masculinos do 1º andar.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2691818, -21.6707276], [-45.2691688, -21.6707526], [-45.2691111, -21.6707276], [-45.2691241, -21.6707026], [-45.2691818, -21.6707276]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '213', 'Procuradoria — Procurador do Município', 'Procuradoria', 'admin', 'Gabinete do Procurador Geral do Município e Secretaria da Procuradoria.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2692602, -21.6705759], [-45.269221, -21.6706517], [-45.2691633, -21.6706267], [-45.2692025, -21.6705509], [-45.2692602, -21.6705759]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '214', 'Secretaria de Governo', 'Secretaria de Governo', 'reception', 'Recepção e atendimento da Secretaria Municipal de Governo.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2692773, -21.6705428], [-45.2692602, -21.6705759], [-45.2692025, -21.6705509], [-45.2692196, -21.6705178], [-45.2692773, -21.6705428]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '215', 'Administração', 'Secretaria de Governo', 'admin', 'Gabinete e Administração da Secretaria Municipal de Governo.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2693255, -21.6704497], [-45.2692773, -21.6705428], [-45.2692196, -21.6705178], [-45.2692678, -21.6704247], [-45.2693255, -21.6704497]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '216', 'Gabinete do Prefeito', 'Gabinete do Prefeito', 'admin', 'Gabinete do Prefeito e Sala de Reuniões do Gabinete.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2692706, -21.6709492], [-45.2692286, -21.6710303], [-45.2691128, -21.6709801], [-45.2691547, -21.670899], [-45.2692706, -21.6709492]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '217', 'Cozinha — Gabinete', 'Gabinete do Prefeito', 'facility', 'Copa, cozinha e apoio do Gabinete no 1º andar.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.269333, -21.6709639], [-45.2692858, -21.6710551], [-45.2692286, -21.6710303], [-45.2692758, -21.6709391], [-45.269333, -21.6709639]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '218', 'Secretaria de Planejamento e Desenvolvimento Urbano e Segurança Pública e Mobilidade Urbana', 'Secretaria de Planejamento', 'service', 'Convênios, Administração SEPLAN, Desenvolvimento Urbano, Segurança Pública e Mobilidade Urbana.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2693739, -21.6708849], [-45.269333, -21.6709639], [-45.2692758, -21.6709391], [-45.2693167, -21.6708601], [-45.2693739, -21.6708849]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '219', 'Secretaria de Planejamento — Engenheiros', 'Secretaria de Planejamento', 'service', 'Recepção e corpo técnico de Engenheiros — Secretaria de Planejamento (SEPLAN).', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2694, -21.6708345], [-45.2693739, -21.6708849], [-45.2693167, -21.6708601], [-45.2693427, -21.6708097], [-45.2694, -21.6708345]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '220', 'Meio Ambiente — Defesa Civil', 'Meio Ambiente e Defesa Civil', 'service', 'Atendimento de Meio Ambiente, Engenharia e Defesa Civil.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2694442, -21.670749], [-45.2694, -21.6708345], [-45.2693427, -21.6708097], [-45.269387, -21.6707242], [-45.2694442, -21.670749]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '221', 'Agricultura', 'Secretaria de Agricultura e Meio Ambiente', 'service', 'Atendimento da Secretaria de Agricultura e Desenvolvimento Rural (SEMMADA).', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.2694836, -21.6706727], [-45.2694442, -21.670749], [-45.269387, -21.6707242], [-45.2694264, -21.6706479], [-45.2694836, -21.6706727]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
+INSERT INTO rooms (floor_id, code, name, department, category, description, opening_hours, geometry) VALUES (2, '222', 'Sala 222 — SEMAP', '—', 'service', 'Setor SEMAP — 1º pavimento.', '08:00 às 17:00', ST_SetSRID(ST_GeomFromGeoJSON('{"type": "Polygon", "coordinates": [[[-45.269549, -21.6705465], [-45.2694836, -21.6706727], [-45.2694264, -21.6706479], [-45.2694917, -21.6705217], [-45.269549, -21.6705465]]]}'), 4326)) ON CONFLICT (floor_id, code) DO UPDATE SET name=EXCLUDED.name, department=EXCLUDED.department, category=EXCLUDED.category, description=EXCLUDED.description, geometry=EXCLUDED.geometry;
 
--- 1º Andar
-(12, 2, 'N1_ELEV', 'Elevador (1º Andar)',               'elevator', ST_SetSRID(ST_MakePoint(-45.26903, -21.67098), 4326)),
-(13, 2, 'N1_ESC',  'Escada (1º Andar)',                 'stairs',   ST_SetSRID(ST_MakePoint(-45.26891, -21.67098), 4326)),
-(14, 2, 'N1_WC',   'Sanitários (1º Andar)',             'restroom', ST_SetSRID(ST_MakePoint(-45.26915, -21.67098), 4326)),
-(15, 2, 'N1_C3',   'Hall do Elevador (1º Andar)',       'corridor', ST_SetSRID(ST_MakePoint(-45.26903, -21.67095), 4326)),
-(16, 2, 'N1_C2',   'Corredor Sul (1º Andar)',           'corridor', ST_SetSRID(ST_MakePoint(-45.26903, -21.67089), 4326)),
-(17, 2, 'N1_203',  'Acesso Sala 203 - RH',              'room',     ST_SetSRID(ST_MakePoint(-45.26912, -21.67089), 4326)),
-(18, 2, 'N1_204',  'Acesso Sala 204 - Licitações',      'room',     ST_SetSRID(ST_MakePoint(-45.26894, -21.67089), 4326)),
-(19, 2, 'N1_C1',   'Corredor Norte (1º Andar)',         'corridor', ST_SetSRID(ST_MakePoint(-45.26903, -21.67078), 4326)),
-(20, 2, 'N1_201',  'Acesso Sala 201 - Finanças',        'room',     ST_SetSRID(ST_MakePoint(-45.26912, -21.67078), 4326)),
-(21, 2, 'N1_202',  'Acesso Sala 202 - Obras',           'room',     ST_SetSRID(ST_MakePoint(-45.26894, -21.67078), 4326)),
-(22, 2, 'N1_SEC',  'Acesso Secretaria / Gabinete',      'room',     ST_SetSRID(ST_MakePoint(-45.26903, -21.67068), 4326))
-ON CONFLICT (id) DO NOTHING;
-
--- 4. Salas (Térreo e 1º Andar)
-INSERT INTO rooms (id, floor_id, code, name, department, category, description, opening_hours, node_id, geometry)
-VALUES
--- Salas do Térreo
-(
-    1, 1, 'REC', 'Recepção', 'Atendimento ao Cidadão / Triagem', 'reception',
-    'Ponto de boas-vindas, informações gerais, emissão de senhas e orientação ao público.',
-    '08:00 às 17:00', 1,
-    ST_GeomFromText('POLYGON((-45.26918 -21.67072, -45.26888 -21.67072, -45.26888 -21.67064, -45.26918 -21.67064, -45.26918 -21.67072))', 4326)
-),
-(
-    2, 1, '101', 'Sala 101', 'Dívida Ativa e Parcelamento', 'service',
-    'Regularização fiscal, negociação de débitos municipais, IPTU atrasado e emissão de guias.',
-    '08:30 às 16:30', 3,
-    ST_GeomFromText('POLYGON((-45.26931 -21.67083, -45.26910 -21.67083, -45.26910 -21.67073, -45.26931 -21.67073, -45.26931 -21.67083))', 4326)
-),
-(
-    3, 1, '102', 'Sala 102', 'ISS e Tributos Mobiliários', 'service',
-    'Atendimento sobre Imposto Sobre Serviços (ISS), Nota Fiscal Eletrônica e cadastro de empresas.',
-    '08:30 às 16:30', 4,
-    ST_GeomFromText('POLYGON((-45.26896 -21.67083, -45.26875 -21.67083, -45.26875 -21.67073, -45.26896 -21.67073, -45.26896 -21.67083))', 4326)
-),
-(
-    4, 1, '103', 'Sala 103', 'SEPLAN - Planejamento Urbano', 'service',
-    'Aprovação de plantas, alvarás de construção, habite-se e consultas de zoneamento.',
-    '09:00 às 16:00', 6,
-    ST_GeomFromText('POLYGON((-45.26931 -21.67094, -45.26910 -21.67094, -45.26910 -21.67084, -45.26931 -21.67084, -45.26931 -21.67094))', 4326)
-),
-(
-    5, 1, '104', 'Sala 104', 'Posto Receita Federal / Protocolo', 'service',
-    'Protocolo geral de processos administrativos, abertura de requerimentos e posto conveniado.',
-    '08:00 às 17:00', 7,
-    ST_GeomFromText('POLYGON((-45.26896 -21.67094, -45.26875 -21.67094, -45.26875 -21.67084, -45.26896 -21.67084, -45.26896 -21.67094))', 4326)
-),
-(
-    6, 1, 'ELEV-0', 'Elevador', 'Circulação Vertical Acessível', 'vertical_circulation',
-    'Elevador social com acessibilidade para acesso ao 1º Andar.',
-    '07:00 às 19:00', 9,
-    ST_GeomFromText('POLYGON((-45.26908 -21.67102, -45.26898 -21.67102, -45.26898 -21.67095, -45.26908 -21.67095, -45.26908 -21.67102))', 4326)
-),
-(
-    7, 1, 'ESC-0', 'Escada', 'Circulação Vertical', 'vertical_circulation',
-    'Escada principal de acesso ao 1º Andar.',
-    '07:00 às 19:00', 10,
-    ST_GeomFromText('POLYGON((-45.26897 -21.67102, -45.26885 -21.67102, -45.26885 -21.67095, -45.26897 -21.67095, -45.26897 -21.67102))', 4326)
-),
-(
-    8, 1, 'WC-0', 'Sanitários Térreo', 'Banheiros Acessíveis / PNE', 'facility',
-    'Sanitários públicos masculino, feminino e acessível (PNE).',
-    '07:00 às 19:00', 11,
-    ST_GeomFromText('POLYGON((-45.26921 -21.67102, -45.26909 -21.67102, -45.26909 -21.67095, -45.26921 -21.67095, -45.26921 -21.67102))', 4326)
-),
-
--- Salas do 1º Andar
-(
-    9, 2, 'SEC', 'Secretaria Geral', 'Gabinete e Secretaria de Governo', 'admin',
-    'Secretaria Executiva, atendimento institucional e assessoria do Gabinete Municipal.',
-    '09:00 às 17:00', 22,
-    ST_GeomFromText('POLYGON((-45.26921 -21.67072, -45.26885 -21.67072, -45.26885 -21.67064, -45.26921 -21.67064, -45.26921 -21.67072))', 4326)
-),
-(
-    10, 2, '201', 'Sala 201', 'Secretaria da Fazenda e Finanças', 'service',
-    'Diretoria financeira, contabilidade pública, tesouraria e atendimento a fornecedores.',
-    '08:30 às 16:30', 20,
-    ST_GeomFromText('POLYGON((-45.26931 -21.67083, -45.26910 -21.67083, -45.26910 -21.67073, -45.26931 -21.67073, -45.26931 -21.67083))', 4326)
-),
-(
-    11, 2, '202', 'Sala 202', 'Secretaria de Obras e Infraestrutura', 'service',
-    'Projetos viários, fiscalização de obras públicas, manutenção urbana e drenagem.',
-    '08:30 às 16:30', 21,
-    ST_GeomFromText('POLYGON((-45.26896 -21.67083, -45.26875 -21.67083, -45.26875 -21.67073, -45.26896 -21.67073, -45.26896 -21.67083))', 4326)
-),
-(
-    12, 2, '203', 'Sala 203', 'Recursos Humanos (RH)', 'admin',
-    'Atendimento ao servidor público, concursos, folha de pagamento e benefícios.',
-    '09:00 às 16:30', 17,
-    ST_GeomFromText('POLYGON((-45.26931 -21.67094, -45.26910 -21.67094, -45.26910 -21.67084, -45.26931 -21.67084, -45.26931 -21.67094))', 4326)
-),
-(
-    13, 2, '204', 'Sala 204', 'Licitações e Contratos', 'admin',
-    'Comissão permanente de licitações, pregão eletrônico e gestão de contratos.',
-    '09:00 às 16:30', 18,
-    ST_GeomFromText('POLYGON((-45.26896 -21.67094, -45.26875 -21.67094, -45.26875 -21.67084, -45.26896 -21.67084, -45.26896 -21.67094))', 4326)
-),
-(
-    14, 2, 'ELEV-1', 'Elevador', 'Circulação Vertical Acessível', 'vertical_circulation',
-    'Elevador social com acesso ao Térreo.',
-    '07:00 às 19:00', 12,
-    ST_GeomFromText('POLYGON((-45.26908 -21.67102, -45.26898 -21.67102, -45.26898 -21.67095, -45.26908 -21.67095, -45.26908 -21.67102))', 4326)
-),
-(
-    15, 2, 'ESC-1', 'Escada', 'Circulação Vertical', 'vertical_circulation',
-    'Escada principal de acesso ao Térreo.',
-    '07:00 às 19:00', 13,
-    ST_GeomFromText('POLYGON((-45.26897 -21.67102, -45.26885 -21.67102, -45.26885 -21.67095, -45.26897 -21.67095, -45.26897 -21.67102))', 4326)
-),
-(
-    16, 2, 'WC-1', 'Sanitários 1º Andar', 'Banheiros Acessíveis / PNE', 'facility',
-    'Sanitários públicos masculino, feminino e acessível (PNE).',
-    '07:00 às 19:00', 14,
-    ST_GeomFromText('POLYGON((-45.26921 -21.67102, -45.26909 -21.67102, -45.26909 -21.67095, -45.26921 -21.67095, -45.26921 -21.67102))', 4326)
-)
-ON CONFLICT (id) DO NOTHING;
-
--- 5. Arestas de Roteamento (Bidirecionais serão tratadas pelo algoritmo ou inseridas nos dois sentidos)
-INSERT INTO routing_edges (from_node, to_node, distance, edge_type, is_accessible, instruction_hint)
-VALUES
--- Ligações do Térreo
-(1, 2, 22.0, 'corridor', TRUE,  'Siga pelo corredor principal a partir da Recepção'),
-(2, 1, 22.0, 'corridor', TRUE,  'Siga pelo corredor em direção à Recepção'),
-
-(2, 3, 10.0, 'door',     TRUE,  'Vire à direita para entrar na Sala 101 (Dívida Ativa)'),
-(3, 2, 10.0, 'door',     TRUE,  'Saia da Sala 101 para o corredor principal'),
-
-(2, 4, 10.0, 'door',     TRUE,  'Vire à esquerda para entrar na Sala 102 (ISS)'),
-(4, 2, 10.0, 'door',     TRUE,  'Saia da Sala 102 para o corredor principal'),
-
-(2, 5, 12.0, 'corridor', TRUE,  'Continue em frente pelo corredor central'),
-(5, 2, 12.0, 'corridor', TRUE,  'Continue pelo corredor em direção à ala norte'),
-
-(5, 6, 10.0, 'door',     TRUE,  'Vire à direita para entrar na Sala 103 (SEPLAN)'),
-(6, 5, 10.0, 'door',     TRUE,  'Saia da Sala 103 para o corredor central'),
-
-(5, 7, 10.0, 'door',     TRUE,  'Vire à esquerda para entrar na Sala 104 (Receita Federal / Protocolo)'),
-(7, 5, 10.0, 'door',     TRUE,  'Saia da Sala 104 para o corredor central'),
-
-(5, 8,  8.0, 'corridor', TRUE,  'Siga até o hall do elevador e escadas'),
-(8, 5,  8.0, 'corridor', TRUE,  'Siga do hall do elevador para o corredor central'),
-
-(8, 9,  4.0, 'corridor', TRUE,  'Vá até o elevador'),
-(9, 8,  4.0, 'corridor', TRUE,  'Saia do elevador para o hall do Térreo'),
-
-(8, 10, 12.0, 'corridor', TRUE, 'Dirija-se até a escada'),
-(10, 8, 12.0, 'corridor', TRUE, 'Saia da escada para o hall do Térreo'),
-
-(8, 11, 12.0, 'door',     TRUE, 'Entre nos Sanitários do Térreo'),
-(11, 8, 12.0, 'door',     TRUE, 'Saia dos Sanitários para o hall do Térreo'),
-
--- Conexões Verticais (Térreo <-> 1º Andar)
-(9,  12, 5.0, 'elevator', TRUE,  'Suba pelo elevador para o 1º Andar'),
-(12, 9,  5.0, 'elevator', TRUE,  'Desça pelo elevador para o Térreo'),
-
-(10, 13, 9.0, 'stairs',   FALSE, 'Suba pela escada para o 1º Andar'),
-(13, 10, 9.0, 'stairs',   FALSE, 'Desça pela escada para o Térreo'),
-
--- Ligações do 1º Andar
-(12, 15,  4.0, 'corridor', TRUE, 'Saia do elevador no 1º Andar e acesse o hall'),
-(15, 12,  4.0, 'corridor', TRUE, 'Vá até o elevador do 1º Andar'),
-
-(13, 15, 12.0, 'corridor', TRUE, 'Saia da escada no 1º Andar e acesse o hall'),
-(15, 13, 12.0, 'corridor', TRUE, 'Dirija-se à escada do 1º Andar'),
-
-(15, 14, 12.0, 'door',     TRUE, 'Entre nos Sanitários do 1º Andar'),
-(14, 15, 12.0, 'door',     TRUE, 'Saia dos Sanitários para o hall do 1º Andar'),
-
-(15, 16,  8.0, 'corridor', TRUE, 'Siga pelo corredor do 1º Andar'),
-(16, 15,  8.0, 'corridor', TRUE, 'Siga até o hall do elevador do 1º Andar'),
-
-(16, 17, 10.0, 'door',     TRUE, 'Vire à esquerda para entrar na Sala 203 (Recursos Humanos)'),
-(17, 16, 10.0, 'door',     TRUE, 'Saia da Sala 203 para o corredor'),
-
-(16, 18, 10.0, 'door',     TRUE, 'Vire à direita para entrar na Sala 204 (Licitações e Contratos)'),
-(18, 16, 10.0, 'door',     TRUE, 'Saia da Sala 204 para o corredor'),
-
-(16, 19, 12.0, 'corridor', TRUE, 'Continue pelo corredor principal do 1º Andar'),
-(19, 16, 12.0, 'corridor', TRUE, 'Continue pelo corredor em direção ao sul'),
-
-(19, 20, 10.0, 'door',     TRUE, 'Vire à esquerda para entrar na Sala 201 (Secretaria de Finanças)'),
-(20, 19, 10.0, 'door',     TRUE, 'Saia da Sala 201 para o corredor'),
-
-(19, 21, 10.0, 'door',     TRUE, 'Vire à direita para entrar na Sala 202 (Secretaria de Obras)'),
-(21, 19, 10.0, 'door',     TRUE, 'Saia da Sala 202 para o corredor'),
-
-(19, 22, 14.0, 'door',     TRUE, 'Siga em frente até a Secretaria Geral / Gabinete'),
-(22, 19, 14.0, 'door',     TRUE, 'Saia da Secretaria Geral para o corredor principal');
-
--- Ajusta as sequences do PostgreSQL após inserção com IDs explícitos
 SELECT setval('buildings_id_seq', (SELECT COALESCE(MAX(id), 1) FROM buildings));
 SELECT setval('floors_id_seq', (SELECT COALESCE(MAX(id), 1) FROM floors));
-SELECT setval('routing_nodes_id_seq', (SELECT COALESCE(MAX(id), 1) FROM routing_nodes));
 SELECT setval('rooms_id_seq', (SELECT COALESCE(MAX(id), 1) FROM rooms));
-SELECT setval('routing_edges_id_seq', (SELECT COALESCE(MAX(id), 1) FROM routing_edges));
