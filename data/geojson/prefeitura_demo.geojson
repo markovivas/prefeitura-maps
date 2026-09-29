@@ -1,0 +1,28 @@
+{
+  "type": "FeatureCollection",
+  "name": "prefeitura_demo_overview",
+  "metadata": {
+    "description": "Planta GeoJSON de demonstração da Prefeitura Municipal de Três Corações - MG (Térreo + 1º Andar). Substitua pelos arquivos convertidos do DWG/CAD quando a planta oficial estiver disponível.",
+    "srid": 4326,
+    "center": [-45.26903, -21.67083]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "layer": "building_footprint",
+        "name": "Prefeitura Municipal de Três Corações"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-45.26933, -21.67103],
+          [-45.26873, -21.67103],
+          [-45.26873, -21.67063],
+          [-45.26933, -21.67063],
+          [-45.26933, -21.67103]
+        ]]
+      }
+    }
+  ]
+}

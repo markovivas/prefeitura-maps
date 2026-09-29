@@ -1,0 +1,50 @@
+{
+  "type": "FeatureCollection",
+  "name": "floor_0_terreo",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1,
+        "building_id": 1,
+        "name": "Térreo",
+        "level": 0,
+        "feature_type": "outline"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-45.26933, -21.67103],
+            [-45.26873, -21.67103],
+            [-45.26873, -21.67063],
+            [-45.26933, -21.67063],
+            [-45.26933, -21.67103]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1,
+        "building_id": 1,
+        "name": "Corredor Central - Térreo",
+        "level": 0,
+        "feature_type": "corridor"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-45.26910, -21.67095],
+            [-45.26896, -21.67095],
+            [-45.26896, -21.67072],
+            [-45.26910, -21.67072],
+            [-45.26910, -21.67095]
+          ]
+        ]
+      }
+    }
+  ]
+}

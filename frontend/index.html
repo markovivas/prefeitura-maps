@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prefeitura de Três Corações — Mapa e Navegação Indoor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <!-- Barra Superior -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-badge">TC</div>
+      <div>
+        <div class="brand-title">Prefeitura de Três Corações — MG | Navegação Indoor</div>
+        <div class="brand-subtitle">Guia Interativo de Salas, Secretarias e Serviços (Centro Administrativo)</div>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <button id="btnOpenQRModal" class="btn btn-ghost-dark" title="Gerar QR Code para Totem ou Celular">
+        📱 QR Code
+      </button>
+      <a href="/docs" target="_blank" class="btn btn-ghost-dark" title="Documentação Swagger da API FastAPI">
+        ⚡ API Docs
+      </a>
+      <a href="/admin" class="btn btn-primary" title="Painel Administrativo (/admin)">
+        ⚙️ Painel Admin
+      </a>
+    </div>
+  </header>
+
+  <!-- Corpo Principal -->
+  <div class="app-layout">
+    <!-- Painel Lateral (Busca de Salas e Setores) -->
+    <aside class="sidebar">
+      <div class="sidebar-tabs">
+        <div class="sidebar-tab active" style="cursor: default;">
+          🔍 Salas e Setores de Atendimento
+        </div>
+      </div>
+
+      <!-- Catálogo e Busca de Salas -->
+      <div id="panelSearch" class="sidebar-content">
+        <div class="search-box">
+          <span class="search-icon">🔎</span>
+          <input
+            id="searchInput"
+            type="text"
+            class="search-input"
+            placeholder="Buscar sala, código, setor ou serviço (ex: 102, ISS, SEPLAN)..."
+          />
+        </div>
+
+        <div id="floorFilterPills" class="floor-filter-pills"></div>
+
+        <div id="roomsList" class="room-list"></div>
+      </div>
+    </aside>
+
+    <!-- Área do Mapa MapLibre GL JS -->
+    <main class="map-wrapper">
+      <!-- Controles Flutuantes no Topo do Mapa -->
+      <div class="map-overlay-top">
+        <div class="map-card-floating">
+          <button id="btnToggleViewMode" class="btn btn-primary btn-sm">
+            🌍 Visão Externa (Cidade)
+          </button>
+          <button id="btnToggle3D" class="btn btn-outline btn-sm" title="Alternar inclinação 2D/3D">
+            📐 2D / 3D
+          </button>
+        </div>
+
+        <!-- Seletor de Pavimento: [ Térreo ] [ 1º Andar ] -->
+        <div id="floorSwitcher" class="floor-switcher"></div>
+      </div>
+
+      <!-- Mapa -->
+      <div id="map"></div>
+
+      <!-- Banner de Boas-vindas na Visão Externa (OpenStreetMap) -->
+      <div id="outdoorBanner" class="outdoor-banner hidden">
+        <div>
+          <div id="outdoorBannerTitle" style="font-weight: 700; font-size: 14px;">📍 Prefeitura Municipal de Três Corações — MG</div>
+          <div style="font-size: 12px; color: #cbd5e1;">
+            Av. Brasil, 225 - Jardim América | Clique no prédio ou no botão ao lado para abrir a planta interna.
+          </div>
+        </div>
+        <button id="btnEnterIndoorBanner" class="btn btn-emerald">
+          Entrar no mapa interno →
+        </button>
+      </div>
+
+      <!-- Card Flutuante de Detalhes da Sala Selecionada -->
+      <div id="roomDetailDrawer" class="room-detail-drawer hidden">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <span id="detailRoomCode" class="room-code-badge">101</span>
+          <button id="btnCloseDetailDrawer" class="btn btn-outline btn-sm">✕</button>
+        </div>
+        <h3 id="detailRoomName" style="margin-top: 6px; font-size: 17px;">Sala 101</h3>
+        <div id="detailRoomDept" style="font-size: 13px; font-weight: 600; color: var(--primary); margin-top: 2px;">
+          Dívida Ativa
+        </div>
+        <div id="detailRoomFloor" style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-top: 4px;">
+          📍 Andar: Térreo
+        </div>
+        <p id="detailRoomDesc" style="font-size: 12.5px; color: var(--text-muted); margin-top: 8px; line-height: 1.45;"></p>
+        <div id="detailRoomHours" style="font-size: 12px; color: var(--text-muted); margin-top: 8px; font-weight: 500;"></div>
+      </div>
+
+      <!-- Legenda -->
+      <div class="map-legend">
+        <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Legenda de Setores</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#a7f3d0; border:1px solid #059669;"></span> Recepção / Entrada</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#bfdbfe; border:1px solid #2563eb;"></span> Atendimento ao Cidadão</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#ddd6fe; border:1px solid #7c3aed;"></span> Secretarias / Administração</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#fde68a; border:1px solid #d97706;"></span> Elevador / Escada</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal QR Code -->
+  <div id="qrModal" class="modal-backdrop hidden">
+    <div style="display:flex; justify-content:space-between; align-items:center;" class="modal-box">
+      <div style="width:100%; display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:16px;">📱 QR Code do Mapa / Setor</h3>
+          <button id="btnCloseQRModal" class="btn btn-outline btn-sm">✕</button>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.45;">
+          Aponte a câmera do celular para abrir o mapa diretamente no setor selecionado:
+        </p>
+        <div style="display:flex; justify-content:center; padding: 10px; background: var(--bg-muted); border-radius: 10px;">
+          <img id="qrCodeImage" src="" alt="QR Code do Setor" width="180" height="180" />
+        </div>
+        <input id="qrUrlInput" type="text" class="form-control" readonly />
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script type="module" src="/js/app.js?v=6"></script>
+</body>
+</html>

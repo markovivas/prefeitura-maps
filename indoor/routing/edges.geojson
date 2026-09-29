@@ -1,0 +1,26 @@
+{
+  "type": "FeatureCollection",
+  "name": "routing_edges",
+  "features": [
+    { "type": "Feature", "properties": { "from_node": 1, "to_node": 2, "distance": 22.0, "floor_id": 1, "level": 0, "edge_type": "corridor" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67068], [-45.26903, -21.67078]] } },
+    { "type": "Feature", "properties": { "from_node": 2, "to_node": 3, "distance": 10.0, "floor_id": 1, "level": 0, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67078], [-45.26912, -21.67078]] } },
+    { "type": "Feature", "properties": { "from_node": 2, "to_node": 4, "distance": 10.0, "floor_id": 1, "level": 0, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67078], [-45.26894, -21.67078]] } },
+    { "type": "Feature", "properties": { "from_node": 2, "to_node": 5, "distance": 12.0, "floor_id": 1, "level": 0, "edge_type": "corridor" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67078], [-45.26903, -21.67089]] } },
+    { "type": "Feature", "properties": { "from_node": 5, "to_node": 6, "distance": 10.0, "floor_id": 1, "level": 0, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67089], [-45.26912, -21.67089]] } },
+    { "type": "Feature", "properties": { "from_node": 5, "to_node": 7, "distance": 10.0, "floor_id": 1, "level": 0, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67089], [-45.26894, -21.67089]] } },
+    { "type": "Feature", "properties": { "from_node": 5, "to_node": 8, "distance": 8.0, "floor_id": 1, "level": 0, "edge_type": "corridor" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67089], [-45.26903, -21.67095]] } },
+    { "type": "Feature", "properties": { "from_node": 8, "to_node": 9, "distance": 4.0, "floor_id": 1, "level": 0, "edge_type": "corridor" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67095], [-45.26903, -21.67098]] } },
+    { "type": "Feature", "properties": { "from_node": 8, "to_node": 10, "distance": 12.0, "floor_id": 1, "level": 0, "edge_type": "corridor" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67095], [-45.26891, -21.67098]] } },
+    { "type": "Feature", "properties": { "from_node": 8, "to_node": 11, "distance": 12.0, "floor_id": 1, "level": 0, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67095], [-45.26915, -21.67098]] } },
+    { "type": "Feature", "properties": { "from_node": 12, "to_node": 15, "distance": 4.0, "floor_id": 2, "level": 1, "edge_type": "corridor" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67098], [-45.26903, -21.67095]] } },
+    { "type": "Feature", "properties": { "from_node": 13, "to_node": 15, "distance": 12.0, "floor_id": 2, "level": 1, "edge_type": "corridor" }, "geometry": { "type": "LineString", "coordinates": [[-45.26891, -21.67098], [-45.26903, -21.67095]] } },
+    { "type": "Feature", "properties": { "from_node": 15, "to_node": 14, "distance": 12.0, "floor_id": 2, "level": 1, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67095], [-45.26915, -21.67098]] } },
+    { "type": "Feature", "properties": { "from_node": 15, "to_node": 16, "distance": 8.0, "floor_id": 2, "level": 1, "edge_type": "corridor" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67095], [-45.26903, -21.67089]] } },
+    { "type": "Feature", "properties": { "from_node": 16, "to_node": 17, "distance": 10.0, "floor_id": 2, "level": 1, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67089], [-45.26912, -21.67089]] } },
+    { "type": "Feature", "properties": { "from_node": 16, "to_node": 18, "distance": 10.0, "floor_id": 2, "level": 1, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67089], [-45.26894, -21.67089]] } },
+    { "type": "Feature", "properties": { "from_node": 16, "to_node": 19, "distance": 12.0, "floor_id": 2, "level": 1, "edge_type": "corridor" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67089], [-45.26903, -21.67078]] } },
+    { "type": "Feature", "properties": { "from_node": 19, "to_node": 20, "distance": 10.0, "floor_id": 2, "level": 1, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67078], [-45.26912, -21.67078]] } },
+    { "type": "Feature", "properties": { "from_node": 19, "to_node": 21, "distance": 10.0, "floor_id": 2, "level": 1, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67078], [-45.26894, -21.67078]] } },
+    { "type": "Feature", "properties": { "from_node": 19, "to_node": 22, "distance": 14.0, "floor_id": 2, "level": 1, "edge_type": "door" }, "geometry": { "type": "LineString", "coordinates": [[-45.26903, -21.67078], [-45.26903, -21.67068]] } }
+  ]
+}

@@ -1,0 +1,1006 @@
+{
+  "type": "FeatureCollection",
+  "name": "terreo_rooms",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 23,
+        "floor_id": 1,
+        "code": "101",
+        "name": "Dívida Ativa",
+        "department": "Secretaria de Finanças",
+        "category": "service",
+        "description": "Atendimento de Dívida Ativa, parcelamentos e regularização fiscal (SIM - 101).",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2689105,
+              -21.6707966
+            ],
+            [
+              -45.2688697,
+              -21.6708755
+            ],
+            [
+              -45.2688215,
+              -21.6708545
+            ],
+            [
+              -45.2688622,
+              -21.6707757
+            ],
+            [
+              -45.2689105,
+              -21.6707966
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 24,
+        "floor_id": 1,
+        "code": "102",
+        "name": "ISS",
+        "department": "Secretaria de Finanças",
+        "category": "service",
+        "description": "Imposto Sobre Serviços (ISS), tributos mobiliários e atendimento SEFIN.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2689499,
+              -21.6707206
+            ],
+            [
+              -45.2689105,
+              -21.6707966
+            ],
+            [
+              -45.2688524,
+              -21.6707714
+            ],
+            [
+              -45.2688917,
+              -21.6706954
+            ],
+            [
+              -45.2689499,
+              -21.6707206
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 25,
+        "floor_id": 1,
+        "code": "103",
+        "name": "Alfredo, Lena",
+        "department": "Secretaria de Planejamento",
+        "category": "service",
+        "description": "Protocolo e atendimento de Fiscalização — Secretaria de Planejamento.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2689633,
+              -21.6706945
+            ],
+            [
+              -45.2689499,
+              -21.6707206
+            ],
+            [
+              -45.2688917,
+              -21.6706954
+            ],
+            [
+              -45.2689052,
+              -21.6706693
+            ],
+            [
+              -45.2689633,
+              -21.6706945
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 26,
+        "floor_id": 1,
+        "code": "104",
+        "name": "PAV — Posto de Atendimento da Receita Federal",
+        "department": "Secretaria de Finanças",
+        "category": "service",
+        "description": "Posto de Atendimento Virtual da Receita Federal (VAF / RFB).",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2689765,
+              -21.6706691
+            ],
+            [
+              -45.2689633,
+              -21.6706945
+            ],
+            [
+              -45.2689052,
+              -21.6706693
+            ],
+            [
+              -45.2689183,
+              -21.6706439
+            ],
+            [
+              -45.2689765,
+              -21.6706691
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 27,
+        "floor_id": 1,
+        "code": "105",
+        "name": "Lanchonete da Prefeitura — Público",
+        "department": "Atendimento Geral / Apoio",
+        "category": "facility",
+        "description": "Lanchonete da Prefeitura voltada ao atendimento do público.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2690157,
+              -21.6705933
+            ],
+            [
+              -45.2689896,
+              -21.6706437
+            ],
+            [
+              -45.2689315,
+              -21.6706185
+            ],
+            [
+              -45.2689576,
+              -21.6705681
+            ],
+            [
+              -45.2690157,
+              -21.6705933
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 28,
+        "floor_id": 1,
+        "code": "106",
+        "name": "Lanchonete da Prefeitura — Funcionários",
+        "department": "Apoio Interno",
+        "category": "facility",
+        "description": "Copa e cozinha da lanchonete para funcionários.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2690286,
+              -21.6705683
+            ],
+            [
+              -45.2690157,
+              -21.6705933
+            ],
+            [
+              -45.2689576,
+              -21.6705681
+            ],
+            [
+              -45.2689705,
+              -21.6705431
+            ],
+            [
+              -45.2690286,
+              -21.6705683
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 29,
+        "floor_id": 1,
+        "code": "107",
+        "name": "Antigo Café — Refeitório",
+        "department": "Apoio Interno",
+        "category": "facility",
+        "description": "Espaço de cantina e refeitório interno.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2690549,
+              -21.6705175
+            ],
+            [
+              -45.2690286,
+              -21.6705683
+            ],
+            [
+              -45.2689705,
+              -21.6705431
+            ],
+            [
+              -45.2689968,
+              -21.6704923
+            ],
+            [
+              -45.2690549,
+              -21.6705175
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 30,
+        "floor_id": 1,
+        "code": "108",
+        "name": "Fiscalização Obras — Posturas",
+        "department": "Secretaria de Planejamento",
+        "category": "service",
+        "description": "Fiscalização de Obras, Posturas e aprovação de projetos.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691071,
+              -21.6704166
+            ],
+            [
+              -45.2690549,
+              -21.6705175
+            ],
+            [
+              -45.2689968,
+              -21.6704923
+            ],
+            [
+              -45.2690489,
+              -21.6703914
+            ],
+            [
+              -45.2691071,
+              -21.6704166
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 31,
+        "floor_id": 1,
+        "code": "109",
+        "name": "Arquivo RH",
+        "department": "Secretaria de Recursos Humanos",
+        "category": "admin",
+        "description": "Acervo e arquivo da Secretaria de Recursos Humanos (SARH).",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691332,
+              -21.6703662
+            ],
+            [
+              -45.2691071,
+              -21.6704166
+            ],
+            [
+              -45.2690489,
+              -21.6703914
+            ],
+            [
+              -45.269075,
+              -21.670341
+            ],
+            [
+              -45.2691332,
+              -21.6703662
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 32,
+        "floor_id": 1,
+        "code": "110",
+        "name": "IPTU",
+        "department": "Secretaria de Finanças",
+        "category": "service",
+        "description": "Atendimento de IPTU, ISS e Minas Fácil.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691043,
+              -21.6708771
+            ],
+            [
+              -45.2690624,
+              -21.6709581
+            ],
+            [
+              -45.2689442,
+              -21.670907
+            ],
+            [
+              -45.2689862,
+              -21.6708259
+            ],
+            [
+              -45.2691043,
+              -21.6708771
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 33,
+        "floor_id": 1,
+        "code": "111",
+        "name": "Recepção",
+        "department": "Atendimento ao Cidadão",
+        "category": "reception",
+        "description": "Recepção central e orientação ao público no pavimento térreo.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691425,
+              -21.6708033
+            ],
+            [
+              -45.2691311,
+              -21.6708253
+            ],
+            [
+              -45.2690734,
+              -21.6708003
+            ],
+            [
+              -45.2690848,
+              -21.6707783
+            ],
+            [
+              -45.2691425,
+              -21.6708033
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 34,
+        "floor_id": 1,
+        "code": "112",
+        "name": "Sala da Faxina",
+        "department": "Serviços Gerais / Apoio",
+        "category": "facility",
+        "description": "Copa e apoio de limpeza / manutenção.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691558,
+              -21.6707775
+            ],
+            [
+              -45.2691425,
+              -21.6708033
+            ],
+            [
+              -45.2690848,
+              -21.6707783
+            ],
+            [
+              -45.2690981,
+              -21.6707525
+            ],
+            [
+              -45.2691558,
+              -21.6707775
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 35,
+        "floor_id": 1,
+        "code": "113",
+        "name": "Banheiros (Feminino)",
+        "department": "Sanitários Públicos",
+        "category": "facility",
+        "description": "Sanitários femininos e acessíveis do pavimento térreo.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691688,
+              -21.6707525
+            ],
+            [
+              -45.2691558,
+              -21.6707775
+            ],
+            [
+              -45.2690981,
+              -21.6707525
+            ],
+            [
+              -45.2691111,
+              -21.6707275
+            ],
+            [
+              -45.2691688,
+              -21.6707525
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 36,
+        "floor_id": 1,
+        "code": "114",
+        "name": "Banheiros (Masculino)",
+        "department": "Sanitários Públicos",
+        "category": "facility",
+        "description": "Sanitários masculinos e acessíveis do pavimento térreo.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691817,
+              -21.6707274
+            ],
+            [
+              -45.2691688,
+              -21.6707525
+            ],
+            [
+              -45.2691111,
+              -21.6707275
+            ],
+            [
+              -45.269124,
+              -21.6707024
+            ],
+            [
+              -45.2691817,
+              -21.6707274
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 37,
+        "floor_id": 1,
+        "code": "115",
+        "name": "Secretaria da Saúde",
+        "department": "Secretaria da Saúde",
+        "category": "service",
+        "description": "Atendimento e setor administrativo no pavimento térreo.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2692209,
+              -21.6706516
+            ],
+            [
+              -45.2691817,
+              -21.6707274
+            ],
+            [
+              -45.269124,
+              -21.6707024
+            ],
+            [
+              -45.2691632,
+              -21.6706266
+            ],
+            [
+              -45.2692209,
+              -21.6706516
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 38,
+        "floor_id": 1,
+        "code": "116",
+        "name": "Departamento de Compras",
+        "department": "Secretaria de Governo",
+        "category": "admin",
+        "description": "Departamento de Compras e suprimentos — Secretaria de Governo.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2692602,
+              -21.6705758
+            ],
+            [
+              -45.2692209,
+              -21.6706516
+            ],
+            [
+              -45.2691632,
+              -21.6706266
+            ],
+            [
+              -45.2692025,
+              -21.6705508
+            ],
+            [
+              -45.2692602,
+              -21.6705758
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 39,
+        "floor_id": 1,
+        "code": "117",
+        "name": "Redação",
+        "department": "Secretaria de Governo",
+        "category": "admin",
+        "description": "Setor de Redação e Licitações — Secretaria de Governo.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2692994,
+              -21.6705
+            ],
+            [
+              -45.2692602,
+              -21.6705758
+            ],
+            [
+              -45.2692025,
+              -21.6705508
+            ],
+            [
+              -45.2692417,
+              -21.670475
+            ],
+            [
+              -45.2692994,
+              -21.6705
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 40,
+        "floor_id": 1,
+        "code": "118",
+        "name": "Arquivo Redação",
+        "department": "Secretaria de Governo",
+        "category": "admin",
+        "description": "Arquivo de Redação e Licitação — Secretaria de Governo.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2693255,
+              -21.6704496
+            ],
+            [
+              -45.2692994,
+              -21.6705
+            ],
+            [
+              -45.2692417,
+              -21.670475
+            ],
+            [
+              -45.2692678,
+              -21.6704246
+            ],
+            [
+              -45.2693255,
+              -21.6704496
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 41,
+        "floor_id": 1,
+        "code": "119",
+        "name": "Arquivo Finanças",
+        "department": "Secretaria de Finanças",
+        "category": "admin",
+        "description": "Arquivo de Contabilidade e Finanças.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2692133,
+              -21.6709243
+            ],
+            [
+              -45.2691713,
+              -21.6710054
+            ],
+            [
+              -45.2691132,
+              -21.6709802
+            ],
+            [
+              -45.2691551,
+              -21.6708991
+            ],
+            [
+              -45.2692133,
+              -21.6709243
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 42,
+        "floor_id": 1,
+        "code": "120",
+        "name": "Contabilidade Finanças",
+        "department": "Secretaria de Finanças",
+        "category": "admin",
+        "description": "Setor de Contabilidade da Secretaria de Finanças.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2692705,
+              -21.6709491
+            ],
+            [
+              -45.2692286,
+              -21.6710302
+            ],
+            [
+              -45.2691713,
+              -21.6710054
+            ],
+            [
+              -45.2692133,
+              -21.6709243
+            ],
+            [
+              -45.2692705,
+              -21.6709491
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 43,
+        "floor_id": 1,
+        "code": "121",
+        "name": "Secretaria Municipal de Finanças — Tesouraria",
+        "department": "Secretaria de Finanças",
+        "category": "service",
+        "description": "Gabinete da Secretaria Municipal de Finanças e Tesouraria.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2693507,
+              -21.6709295
+            ],
+            [
+              -45.2692858,
+              -21.671055
+            ],
+            [
+              -45.2692286,
+              -21.6710302
+            ],
+            [
+              -45.2692934,
+              -21.6709047
+            ],
+            [
+              -45.2693507,
+              -21.6709295
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 44,
+        "floor_id": 1,
+        "code": "122",
+        "name": "Setor Financeiro — Compras",
+        "department": "Secretaria de Desenvolvimento Social",
+        "category": "service",
+        "description": "Setor Financeiro e de Compras da Secretaria de Desenvolvimento Social (SEDESO).",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2693999,
+              -21.6708344
+            ],
+            [
+              -45.2693507,
+              -21.6709295
+            ],
+            [
+              -45.2692934,
+              -21.6709047
+            ],
+            [
+              -45.2693427,
+              -21.6708096
+            ],
+            [
+              -45.2693999,
+              -21.6708344
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 45,
+        "floor_id": 1,
+        "code": "123",
+        "name": "Setor Administrativo",
+        "department": "Secretaria de Desenvolvimento Social",
+        "category": "service",
+        "description": "Setor Administrativo e Conselhos — Secretaria de Desenvolvimento Social (SEDESO).",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2694441,
+              -21.6707489
+            ],
+            [
+              -45.2693999,
+              -21.6708344
+            ],
+            [
+              -45.2693427,
+              -21.6708096
+            ],
+            [
+              -45.2693869,
+              -21.6707241
+            ],
+            [
+              -45.2694441,
+              -21.6707489
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 46,
+        "floor_id": 1,
+        "code": "124",
+        "name": "Folha de Pagamento",
+        "department": "Secretaria de Administração e Recursos Humanos",
+        "category": "admin",
+        "description": "Setor de Folha de Pagamento — Secretaria de Administração e Recursos Humanos (SARH).",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2694967,
+              -21.6706472
+            ],
+            [
+              -45.2694441,
+              -21.6707489
+            ],
+            [
+              -45.2693869,
+              -21.6707241
+            ],
+            [
+              -45.2694395,
+              -21.6706224
+            ],
+            [
+              -45.2694967,
+              -21.6706472
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 47,
+        "floor_id": 1,
+        "code": "125",
+        "name": "Secretaria de Administração e Recursos Humanos",
+        "department": "Secretaria de Administração e Recursos Humanos",
+        "category": "service",
+        "description": "Departamento Pessoal e atendimento ao servidor — SARH.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2695489,
+              -21.6705464
+            ],
+            [
+              -45.2694967,
+              -21.6706472
+            ],
+            [
+              -45.2694395,
+              -21.6706224
+            ],
+            [
+              -45.2694917,
+              -21.6705216
+            ],
+            [
+              -45.2695489,
+              -21.6705464
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

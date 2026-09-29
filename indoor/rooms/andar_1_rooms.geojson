@@ -1,0 +1,886 @@
+{
+  "type": "FeatureCollection",
+  "name": "andar_1_rooms",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 48,
+        "floor_id": 2,
+        "code": "201",
+        "name": "Gabinete da Vice-Prefeita",
+        "department": "Gabinete da Vice-Prefeita",
+        "category": "admin",
+        "description": "Recepção e Gabinete da Vice-Prefeita.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2690467,
+              -21.6708522
+            ],
+            [
+              -45.2690047,
+              -21.6709333
+            ],
+            [
+              -45.2689406,
+              -21.6709055
+            ],
+            [
+              -45.2689826,
+              -21.6708244
+            ],
+            [
+              -45.2690467,
+              -21.6708522
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 49,
+        "floor_id": 2,
+        "code": "202",
+        "name": "SECOM",
+        "department": "Secretaria de Comunicações",
+        "category": "admin",
+        "description": "Secretaria de Comunicações (SECOM) / SEMCI.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2689826,
+              -21.6708244
+            ],
+            [
+              -45.2689406,
+              -21.6709055
+            ],
+            [
+              -45.2688225,
+              -21.6708543
+            ],
+            [
+              -45.2688644,
+              -21.6707732
+            ],
+            [
+              -45.2689826,
+              -21.6708244
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 50,
+        "floor_id": 2,
+        "code": "203",
+        "name": "Secretaria de Controle Interno",
+        "department": "Secretaria de Controle Interno",
+        "category": "admin",
+        "description": "Controladoria e Secretaria Municipal de Controle Interno.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2689371,
+              -21.6707455
+            ],
+            [
+              -45.2689121,
+              -21.6707939
+            ],
+            [
+              -45.2688539,
+              -21.6707687
+            ],
+            [
+              -45.268879,
+              -21.6707203
+            ],
+            [
+              -45.2689371,
+              -21.6707455
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 51,
+        "floor_id": 2,
+        "code": "204",
+        "name": "T.I.",
+        "department": "Tecnologia da Informação",
+        "category": "admin",
+        "description": "Setor de Tecnologia da Informação (T.I.) e suporte de sistemas.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2689895,
+              -21.6706442
+            ],
+            [
+              -45.2689371,
+              -21.6707455
+            ],
+            [
+              -45.268879,
+              -21.6707203
+            ],
+            [
+              -45.2689313,
+              -21.670619
+            ],
+            [
+              -45.2689895,
+              -21.6706442
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 52,
+        "floor_id": 2,
+        "code": "205",
+        "name": "Departamento de Compras",
+        "department": "Secretaria da Saúde",
+        "category": "admin",
+        "description": "Departamento de Compras da Secretaria Municipal da Saúde.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2690287,
+              -21.6705684
+            ],
+            [
+              -45.2689895,
+              -21.6706442
+            ],
+            [
+              -45.2689313,
+              -21.670619
+            ],
+            [
+              -45.2689706,
+              -21.6705432
+            ],
+            [
+              -45.2690287,
+              -21.6705684
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 53,
+        "floor_id": 2,
+        "code": "206",
+        "name": "Atenção Primária — Saúde Bucal",
+        "department": "Secretaria da Saúde",
+        "category": "service",
+        "description": "Coordenação de Atenção Primária e Saúde Bucal — Secretaria da Saúde.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.269055,
+              -21.6705176
+            ],
+            [
+              -45.2690287,
+              -21.6705684
+            ],
+            [
+              -45.2689706,
+              -21.6705432
+            ],
+            [
+              -45.2689968,
+              -21.6704924
+            ],
+            [
+              -45.269055,
+              -21.6705176
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 54,
+        "floor_id": 2,
+        "code": "207",
+        "name": "Faturamento",
+        "department": "Secretaria da Saúde",
+        "category": "admin",
+        "description": "Setor de Faturamento — Secretaria Municipal da Saúde.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691209,
+              -21.6703901
+            ],
+            [
+              -45.269055,
+              -21.6705176
+            ],
+            [
+              -45.2689968,
+              -21.6704924
+            ],
+            [
+              -45.2690628,
+              -21.6703649
+            ],
+            [
+              -45.2691209,
+              -21.6703901
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 55,
+        "floor_id": 2,
+        "code": "208",
+        "name": "Sala 208",
+        "department": "—",
+        "category": "admin",
+        "description": "Sala técnica / estúdio no 1º pavimento.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691612,
+              -21.6703784
+            ],
+            [
+              -45.2691488,
+              -21.6704022
+            ],
+            [
+              -45.2690628,
+              -21.6703649
+            ],
+            [
+              -45.2690751,
+              -21.6703411
+            ],
+            [
+              -45.2691612,
+              -21.6703784
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 56,
+        "floor_id": 2,
+        "code": "209",
+        "name": "Fiscalização Obras e Posturas",
+        "department": "Secretaria de Planejamento",
+        "category": "service",
+        "description": "Fiscalização de Obras e Posturas / Arquivo no 1º pavimento.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691559,
+              -21.6707776
+            ],
+            [
+              -45.2691294,
+              -21.6708288
+            ],
+            [
+              -45.2690717,
+              -21.6708038
+            ],
+            [
+              -45.2690982,
+              -21.6707526
+            ],
+            [
+              -45.2691559,
+              -21.6707776
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 57,
+        "floor_id": 2,
+        "code": "210",
+        "name": "Procuradoria — Advogados",
+        "department": "Procuradoria",
+        "category": "admin",
+        "description": "Sala dos Advogados — Procuradoria Geral do Município.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.269221,
+              -21.6706517
+            ],
+            [
+              -45.2691818,
+              -21.6707276
+            ],
+            [
+              -45.2691241,
+              -21.6707026
+            ],
+            [
+              -45.2691633,
+              -21.6706267
+            ],
+            [
+              -45.269221,
+              -21.6706517
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 58,
+        "floor_id": 2,
+        "code": "211",
+        "name": "Banheiros (Feminino)",
+        "department": "Sanitários Públicos",
+        "category": "facility",
+        "description": "Sanitários femininos do 1º andar.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691688,
+              -21.6707526
+            ],
+            [
+              -45.2691559,
+              -21.6707776
+            ],
+            [
+              -45.2690982,
+              -21.6707526
+            ],
+            [
+              -45.2691111,
+              -21.6707276
+            ],
+            [
+              -45.2691688,
+              -21.6707526
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 59,
+        "floor_id": 2,
+        "code": "212",
+        "name": "Banheiros (Masculino)",
+        "department": "Sanitários Públicos",
+        "category": "facility",
+        "description": "Sanitários masculinos do 1º andar.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2691818,
+              -21.6707276
+            ],
+            [
+              -45.2691688,
+              -21.6707526
+            ],
+            [
+              -45.2691111,
+              -21.6707276
+            ],
+            [
+              -45.2691241,
+              -21.6707026
+            ],
+            [
+              -45.2691818,
+              -21.6707276
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 60,
+        "floor_id": 2,
+        "code": "213",
+        "name": "Procuradoria — Procurador do Município",
+        "department": "Procuradoria",
+        "category": "admin",
+        "description": "Gabinete do Procurador Geral do Município e Secretaria da Procuradoria.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2692602,
+              -21.6705759
+            ],
+            [
+              -45.269221,
+              -21.6706517
+            ],
+            [
+              -45.2691633,
+              -21.6706267
+            ],
+            [
+              -45.2692025,
+              -21.6705509
+            ],
+            [
+              -45.2692602,
+              -21.6705759
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 61,
+        "floor_id": 2,
+        "code": "214",
+        "name": "Secretaria de Governo",
+        "department": "Secretaria de Governo",
+        "category": "reception",
+        "description": "Recepção e atendimento da Secretaria Municipal de Governo.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2692773,
+              -21.6705428
+            ],
+            [
+              -45.2692602,
+              -21.6705759
+            ],
+            [
+              -45.2692025,
+              -21.6705509
+            ],
+            [
+              -45.2692196,
+              -21.6705178
+            ],
+            [
+              -45.2692773,
+              -21.6705428
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 62,
+        "floor_id": 2,
+        "code": "215",
+        "name": "Administração",
+        "department": "Secretaria de Governo",
+        "category": "admin",
+        "description": "Gabinete e Administração da Secretaria Municipal de Governo.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2693255,
+              -21.6704497
+            ],
+            [
+              -45.2692773,
+              -21.6705428
+            ],
+            [
+              -45.2692196,
+              -21.6705178
+            ],
+            [
+              -45.2692678,
+              -21.6704247
+            ],
+            [
+              -45.2693255,
+              -21.6704497
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 63,
+        "floor_id": 2,
+        "code": "216",
+        "name": "Gabinete do Prefeito",
+        "department": "Gabinete do Prefeito",
+        "category": "admin",
+        "description": "Gabinete do Prefeito e Sala de Reuniões do Gabinete.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2692706,
+              -21.6709492
+            ],
+            [
+              -45.2692286,
+              -21.6710303
+            ],
+            [
+              -45.2691128,
+              -21.6709801
+            ],
+            [
+              -45.2691547,
+              -21.670899
+            ],
+            [
+              -45.2692706,
+              -21.6709492
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 64,
+        "floor_id": 2,
+        "code": "217",
+        "name": "Cozinha — Gabinete",
+        "department": "Gabinete do Prefeito",
+        "category": "facility",
+        "description": "Copa, cozinha e apoio do Gabinete no 1º andar.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.269333,
+              -21.6709639
+            ],
+            [
+              -45.2692858,
+              -21.6710551
+            ],
+            [
+              -45.2692286,
+              -21.6710303
+            ],
+            [
+              -45.2692758,
+              -21.6709391
+            ],
+            [
+              -45.269333,
+              -21.6709639
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 65,
+        "floor_id": 2,
+        "code": "218",
+        "name": "Secretaria de Planejamento e Desenvolvimento Urbano e Segurança Pública e Mobilidade Urbana",
+        "department": "Secretaria de Planejamento",
+        "category": "service",
+        "description": "Convênios, Administração SEPLAN, Desenvolvimento Urbano, Segurança Pública e Mobilidade Urbana.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2693739,
+              -21.6708849
+            ],
+            [
+              -45.269333,
+              -21.6709639
+            ],
+            [
+              -45.2692758,
+              -21.6709391
+            ],
+            [
+              -45.2693167,
+              -21.6708601
+            ],
+            [
+              -45.2693739,
+              -21.6708849
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 66,
+        "floor_id": 2,
+        "code": "219",
+        "name": "Secretaria de Planejamento — Engenheiros",
+        "department": "Secretaria de Planejamento",
+        "category": "service",
+        "description": "Recepção e corpo técnico de Engenheiros — Secretaria de Planejamento (SEPLAN).",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2694,
+              -21.6708345
+            ],
+            [
+              -45.2693739,
+              -21.6708849
+            ],
+            [
+              -45.2693167,
+              -21.6708601
+            ],
+            [
+              -45.2693427,
+              -21.6708097
+            ],
+            [
+              -45.2694,
+              -21.6708345
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 67,
+        "floor_id": 2,
+        "code": "220",
+        "name": "Meio Ambiente — Defesa Civil",
+        "department": "Meio Ambiente e Defesa Civil",
+        "category": "service",
+        "description": "Atendimento de Meio Ambiente, Engenharia e Defesa Civil.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2694442,
+              -21.670749
+            ],
+            [
+              -45.2694,
+              -21.6708345
+            ],
+            [
+              -45.2693427,
+              -21.6708097
+            ],
+            [
+              -45.269387,
+              -21.6707242
+            ],
+            [
+              -45.2694442,
+              -21.670749
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 68,
+        "floor_id": 2,
+        "code": "221",
+        "name": "Agricultura",
+        "department": "Secretaria de Agricultura e Meio Ambiente",
+        "category": "service",
+        "description": "Atendimento da Secretaria de Agricultura e Desenvolvimento Rural (SEMMADA).",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.2694836,
+              -21.6706727
+            ],
+            [
+              -45.2694442,
+              -21.670749
+            ],
+            [
+              -45.269387,
+              -21.6707242
+            ],
+            [
+              -45.2694264,
+              -21.6706479
+            ],
+            [
+              -45.2694836,
+              -21.6706727
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 69,
+        "floor_id": 2,
+        "code": "222",
+        "name": "Sala 222 — SEMAP",
+        "department": "—",
+        "category": "service",
+        "description": "Setor SEMAP — 1º pavimento.",
+        "opening_hours": "08:00 às 17:00"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -45.269549,
+              -21.6705465
+            ],
+            [
+              -45.2694836,
+              -21.6706727
+            ],
+            [
+              -45.2694264,
+              -21.6706479
+            ],
+            [
+              -45.2694917,
+              -21.6705217
+            ],
+            [
+              -45.269549,
+              -21.6705465
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

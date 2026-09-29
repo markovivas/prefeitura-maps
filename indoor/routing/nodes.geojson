@@ -1,0 +1,28 @@
+{
+  "type": "FeatureCollection",
+  "name": "routing_nodes",
+  "features": [
+    { "type": "Feature", "properties": { "id": 1, "floor_id": 1, "level": 0, "code": "N0_REC", "name": "Recepção Principal", "node_type": "entrance" }, "geometry": { "type": "Point", "coordinates": [-45.26903, -21.67068] } },
+    { "type": "Feature", "properties": { "id": 2, "floor_id": 1, "level": 0, "code": "N0_C1", "name": "Corredor Norte (Térreo)", "node_type": "corridor" }, "geometry": { "type": "Point", "coordinates": [-45.26903, -21.67078] } },
+    { "type": "Feature", "properties": { "id": 3, "floor_id": 1, "level": 0, "code": "N0_101", "name": "Acesso Sala 101", "node_type": "room" }, "geometry": { "type": "Point", "coordinates": [-45.26912, -21.67078] } },
+    { "type": "Feature", "properties": { "id": 4, "floor_id": 1, "level": 0, "code": "N0_102", "name": "Acesso Sala 102", "node_type": "room" }, "geometry": { "type": "Point", "coordinates": [-45.26894, -21.67078] } },
+    { "type": "Feature", "properties": { "id": 5, "floor_id": 1, "level": 0, "code": "N0_C2", "name": "Corredor Sul (Térreo)", "node_type": "corridor" }, "geometry": { "type": "Point", "coordinates": [-45.26903, -21.67089] } },
+    { "type": "Feature", "properties": { "id": 6, "floor_id": 1, "level": 0, "code": "N0_103", "name": "Acesso Sala 103", "node_type": "room" }, "geometry": { "type": "Point", "coordinates": [-45.26912, -21.67089] } },
+    { "type": "Feature", "properties": { "id": 7, "floor_id": 1, "level": 0, "code": "N0_104", "name": "Acesso Sala 104", "node_type": "room" }, "geometry": { "type": "Point", "coordinates": [-45.26894, -21.67089] } },
+    { "type": "Feature", "properties": { "id": 8, "floor_id": 1, "level": 0, "code": "N0_C3", "name": "Hall do Elevador (Térreo)", "node_type": "corridor" }, "geometry": { "type": "Point", "coordinates": [-45.26903, -21.67095] } },
+    { "type": "Feature", "properties": { "id": 9, "floor_id": 1, "level": 0, "code": "N0_ELEV", "name": "Elevador (Térreo)", "node_type": "elevator" }, "geometry": { "type": "Point", "coordinates": [-45.26903, -21.67098] } },
+    { "type": "Feature", "properties": { "id": 10, "floor_id": 1, "level": 0, "code": "N0_ESC", "name": "Escada (Térreo)", "node_type": "stairs" }, "geometry": { "type": "Point", "coordinates": [-45.26891, -21.67098] } },
+    { "type": "Feature", "properties": { "id": 11, "floor_id": 1, "level": 0, "code": "N0_WC", "name": "Sanitários (Térreo)", "node_type": "restroom" }, "geometry": { "type": "Point", "coordinates": [-45.26915, -21.67098] } },
+    { "type": "Feature", "properties": { "id": 12, "floor_id": 2, "level": 1, "code": "N1_ELEV", "name": "Elevador (1º Andar)", "node_type": "elevator" }, "geometry": { "type": "Point", "coordinates": [-45.26903, -21.67098] } },
+    { "type": "Feature", "properties": { "id": 13, "floor_id": 2, "level": 1, "code": "N1_ESC", "name": "Escada (1º Andar)", "node_type": "stairs" }, "geometry": { "type": "Point", "coordinates": [-45.26891, -21.67098] } },
+    { "type": "Feature", "properties": { "id": 14, "floor_id": 2, "level": 1, "code": "N1_WC", "name": "Sanitários (1º Andar)", "node_type": "restroom" }, "geometry": { "type": "Point", "coordinates": [-45.26915, -21.67098] } },
+    { "type": "Feature", "properties": { "id": 15, "floor_id": 2, "level": 1, "code": "N1_C3", "name": "Hall do Elevador (1º Andar)", "node_type": "corridor" }, "geometry": { "type": "Point", "coordinates": [-45.26903, -21.67095] } },
+    { "type": "Feature", "properties": { "id": 16, "floor_id": 2, "level": 1, "code": "N1_C2", "name": "Corredor Sul (1º Andar)", "node_type": "corridor" }, "geometry": { "type": "Point", "coordinates": [-45.26903, -21.67089] } },
+    { "type": "Feature", "properties": { "id": 17, "floor_id": 2, "level": 1, "code": "N1_203", "name": "Acesso Sala 203", "node_type": "room" }, "geometry": { "type": "Point", "coordinates": [-45.26912, -21.67089] } },
+    { "type": "Feature", "properties": { "id": 18, "floor_id": 2, "level": 1, "code": "N1_204", "name": "Acesso Sala 204", "node_type": "room" }, "geometry": { "type": "Point", "coordinates": [-45.26894, -21.67089] } },
+    { "type": "Feature", "properties": { "id": 19, "floor_id": 2, "level": 1, "code": "N1_C1", "name": "Corredor Norte (1º Andar)", "node_type": "corridor" }, "geometry": { "type": "Point", "coordinates": [-45.26903, -21.67078] } },
+    { "type": "Feature", "properties": { "id": 20, "floor_id": 2, "level": 1, "code": "N1_201", "name": "Acesso Sala 201", "node_type": "room" }, "geometry": { "type": "Point", "coordinates": [-45.26912, -21.67078] } },
+    { "type": "Feature", "properties": { "id": 21, "floor_id": 2, "level": 1, "code": "N1_202", "name": "Acesso Sala 202", "node_type": "room" }, "geometry": { "type": "Point", "coordinates": [-45.26894, -21.67078] } },
+    { "type": "Feature", "properties": { "id": 22, "floor_id": 2, "level": 1, "code": "N1_SEC", "name": "Acesso Secretaria Geral", "node_type": "room" }, "geometry": { "type": "Point", "coordinates": [-45.26903, -21.67068] } }
+  ]
+}
