@@ -6,9 +6,10 @@
   <title>Painel Administrativo & Configurações — Prefeitura de Três Corações</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/admin.css?v=1" />
+  <link rel="stylesheet" href="/css/admin.css?v=2" />
 </head>
 <body>
 
@@ -16,56 +17,82 @@
        TELA DE LOGIN ADMINISTRATIVO
        ======================================================================== -->
   <div id="adminLoginView" class="login-view">
-    <div class="login-card">
-      <div class="login-brand">
-        <div class="brand-badge-lg">TC</div>
-        <div>
-          <h1 class="login-title">Acesso Administrativo</h1>
-          <p class="login-subtitle">Prefeitura Municipal de Três Corações — MG<br/>Configurações e Gestão do Mapa Indoor</p>
+    <div class="login-split-card">
+      
+      <!-- Painel Visual da Planta Arquitetônica CAD (Arte da Home) -->
+      <div class="login-preview-panel">
+        <div class="login-preview-header">
+          <span class="login-preview-tag"><i class="fas fa-compass-drafting"></i> PLANTA TÉCNICA</span>
+          <span class="login-preview-badge">Av. Brasil, 225</span>
+        </div>
+        
+        <div class="login-preview-visual">
+          <img src="/assets/floorplans/floor_1.svg" alt="Planta CAD Centro Administrativo" class="login-blueprint-svg" />
+        </div>
+
+        <div class="login-preview-info">
+          <h3>Centro Administrativo Dr. Astolpho Gazzola</h3>
+          <p>Projeto Arquitetônico Executivo • Mapeamento Indoor PostGIS</p>
+          <div class="login-preview-stats">
+            <span><i class="fas fa-layer-group"></i> 2 Pavimentos</span>
+            <span><i class="fas fa-door-open"></i> 47 Salas</span>
+            <span><i class="fas fa-satellite"></i> CAD Noturno</span>
+          </div>
         </div>
       </div>
 
-      <div id="loginErrorMsg" class="login-error hidden">
-        <span>⚠️</span>
-        <span id="loginErrorText">Usuário ou senha incorretos.</span>
-      </div>
-
-      <form id="formAdminLogin" class="login-form">
-        <div class="form-group">
-          <label class="form-label" for="loginUsername">👤 Usuário</label>
-          <input
-            type="text"
-            id="loginUsername"
-            class="form-control"
-            placeholder="Digite o usuário (ex: admin)"
-            required
-            autocomplete="username"
-          />
+      <!-- Formulário de Login -->
+      <div class="login-card">
+        <div class="login-brand">
+          <div class="brand-badge-lg">TC</div>
+          <div>
+            <h1 class="login-title">Acesso Administrativo</h1>
+            <p class="login-subtitle">Prefeitura Municipal de Três Corações — MG<br/>Configurações e Gestão do Mapa Indoor</p>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="loginPassword">🔑 Senha</label>
-          <input
-            type="password"
-            id="loginPassword"
-            class="form-control"
-            placeholder="Digite sua senha"
-            required
-            autocomplete="current-password"
-          />
+        <div id="loginErrorMsg" class="login-error hidden">
+          <span>⚠️</span>
+          <span id="loginErrorText">Usuário ou senha incorretos.</span>
         </div>
 
-        <button type="submit" id="btnLoginSubmit" class="login-btn">
-          <span>Entrar no Painel</span>
-          <span>→</span>
-        </button>
-      </form>
+        <form id="formAdminLogin" class="login-form">
+          <div class="form-group">
+            <label class="form-label" for="loginUsername">👤 Usuário</label>
+            <input
+              type="text"
+              id="loginUsername"
+              class="form-control"
+              placeholder="Digite o usuário (ex: admin)"
+              required
+              autocomplete="username"
+            />
+          </div>
 
-      <div class="login-tip">
-        💡 <strong>Acesso Padrão:</strong> Usuário: <code>admin</code> | Senha: <code>admin123</code>
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">🔑 Senha</label>
+            <input
+              type="password"
+              id="loginPassword"
+              class="form-control"
+              placeholder="Digite sua senha"
+              required
+              autocomplete="current-password"
+            />
+          </div>
+
+          <button type="submit" id="btnLoginSubmit" class="login-btn">
+            <span>Entrar no Painel</span>
+            <span>→</span>
+          </button>
+        </form>
+
+        <div class="login-tip">
+          💡 <strong>Acesso Padrão:</strong> Usuário: <code>admin</code> | Senha: <code>admin123</code>
+        </div>
+
+        <a href="/" class="login-back-link">← Voltar ao Mapa Público</a>
       </div>
-
-      <a href="/" class="login-back-link">← Voltar ao Mapa Público</a>
     </div>
   </div>
 
@@ -197,28 +224,81 @@
           </button>
         </div>
 
-        <!-- Tabela de Salas -->
-        <div class="admin-table-card">
-          <div class="table-header-info">
-            <span class="table-title">Setores Cadastrados</span>
-            <span id="adminRoomsCountLabel" class="table-count-label">47 setores</span>
+        <!-- Grid Responsivo: Tabela de Salas + Planta Arquitetônica CAD -->
+        <div class="admin-rooms-grid">
+          
+          <!-- Coluna 1: Tabela de Salas -->
+          <div class="admin-table-col">
+            <div class="admin-table-card">
+              <div class="table-header-info">
+                <span class="table-title">Setores Cadastrados</span>
+                <span id="adminRoomsCountLabel" class="table-count-label">47 setores</span>
+              </div>
+
+              <div class="data-table-wrapper">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 75px;">Código</th>
+                      <th>Sala / Ambiente</th>
+                      <th>Secretaria / Órgão</th>
+                      <th style="width: 105px;">Andar</th>
+                      <th style="width: 155px; text-align: right;">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tableRoomsBody"></tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
-          <div class="data-table-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th style="width: 80px;">Código</th>
-                  <th>Sala / Ambiente</th>
-                  <th>Secretaria / Órgão</th>
-                  <th style="width: 110px;">Andar</th>
-                  <th>Horário</th>
-                  <th style="width: 180px; text-align: right;">Ações</th>
-                </tr>
-              </thead>
-              <tbody id="tableRoomsBody"></tbody>
-            </table>
+          <!-- Coluna 2: Planta Arquitetônica CAD (Arte da Home) -->
+          <div class="admin-floorplan-col">
+            <div class="admin-floorplan-card">
+              
+              <!-- Topo do Card CAD -->
+              <div class="admin-floorplan-header">
+                <div class="admin-floorplan-title">
+                  <i class="fas fa-compass-drafting" style="color: #00a6fb; font-size: 1.15rem;"></i>
+                  <div>
+                    <span class="admin-floorplan-title-main">Planta Arquitetônica</span>
+                    <span class="admin-floorplan-title-sub">Visualização Oficial • CAD Noturno</span>
+                  </div>
+                </div>
+
+                <div class="admin-floorplan-controls">
+                  <div id="adminFloorSwitcher" class="floor-switcher-mini"></div>
+                </div>
+              </div>
+
+              <!-- Canvas da Planta CAD Vetorial Interativa -->
+              <div class="map-canvas-wrapper admin-canvas-wrapper">
+                <div id="adminFloorplanView"></div>
+
+                <!-- Controles Flutuantes de Zoom -->
+                <div class="cad-map-zoom-controls">
+                  <button type="button" id="btnAdminZoomIn" class="cad-zoom-btn" title="Aproximar Planta"><i class="fas fa-plus"></i></button>
+                  <button type="button" id="btnAdminZoomOut" class="cad-zoom-btn" title="Afastar Planta"><i class="fas fa-minus"></i></button>
+                  <button type="button" id="btnAdminResetView" class="cad-zoom-btn" title="Centralizar Visualização"><i class="fas fa-arrows-to-dot"></i></button>
+                </div>
+
+                <!-- Dica de Orientação -->
+                <div class="map-landmark-badge">
+                  <i class="fas fa-door-open"></i> Entrada Principal (Av. Brasil)
+                </div>
+              </div>
+
+              <!-- Rodapé da Planta no Admin -->
+              <div class="admin-floorplan-footer" id="adminCompanionFooter">
+                <div class="admin-floorplan-empty">
+                  <i class="fas fa-hand-pointer" style="color: #00a6fb;"></i>
+                  <span>Clique em qualquer linha da tabela para localizar a sala na planta.</span>
+                </div>
+              </div>
+
+            </div>
           </div>
+
         </div>
       </div>
 
@@ -441,6 +521,6 @@
   </div>
 
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <script type="module" src="/js/admin.js?v=5"></script>
+  <script type="module" src="/js/admin.js?v=6"></script>
 </body>
 </html>

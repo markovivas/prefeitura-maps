@@ -1,8 +1,11 @@
 import { IndoorAPI } from "./api.js?v=4";
+import { SvgFloorplanViewer } from "./floorplan.js?v=10";
 
 let buildingCache = null;
 let floorsCache = [];
 let roomsCache = [];
+let adminFloorplanViewer = null;
+let selectedAdminRoomId = null;
 
 // Estado do Editor Visual de Desenho no Mapa (/admin)
 let drawMap = null;
@@ -83,6 +86,7 @@ async function refreshAllAdminData() {
     renderModalFloorSelect(floors);
     populateAdminFloorFilter(floors);
     filterAndRenderAdminRooms();
+    await initAdminFloorplan();
   } catch (err) {
     console.error("Erro no painel admin:", err);
     alert(`Erro ao carregar dados do painel: ${err.message}`);
@@ -182,31 +186,153 @@ function renderRoomsTableRows(rooms) {
 
   for (const r of rooms) {
     const tr = document.createElement("tr");
+    tr.dataset.roomId = r.id;
+    if (selectedAdminRoomId === r.id) {
+      tr.classList.add("table-row-selected");
+    }
+    tr.style.cursor = "pointer";
     tr.innerHTML = `
       <td><span class="code-pill cat-${r.category}">${r.code}</span></td>
       <td><strong>${r.name}</strong></td>
       <td style="color:#2563eb; font-weight:500;">${r.department}</td>
       <td><span class="floor-tag-table">📍 ${r.floor_name}</span></td>
-      <td style="font-size:12px; color:var(--text-muted);">${r.opening_hours || "08:00 às 17:00"}</td>
       <td style="text-align: right;">
         <div class="table-actions" style="justify-content: flex-end;">
-          <button class="btn-action-edit" data-edit-room="${r.id}">✏️ Editar / Desenho</button>
+          <button class="btn-action-edit" data-edit-room="${r.id}" title="Editar sala">✏️</button>
           <button class="btn-action-delete" data-del-room="${r.id}" title="Excluir sala">🗑️</button>
         </div>
       </td>
     `;
 
-    tr.querySelector("[data-edit-room]").addEventListener("click", () => {
+    tr.addEventListener("click", (e) => {
+      if (e.target.closest("button")) return;
+      highlightAdminTableRow(r.id);
+    });
+
+    tr.addEventListener("mouseenter", () => {
+      if (adminFloorplanViewer && adminFloorplanViewer.currentFloorId === r.floor_id) {
+        adminFloorplanViewer.highlightRoom(r.id);
+      }
+    });
+
+    tr.querySelector("[data-edit-room]").addEventListener("click", (e) => {
+      e.stopPropagation();
       openRoomMapModal(r);
     });
 
-    tr.querySelector("[data-del-room]").addEventListener("click", async () => {
+    tr.querySelector("[data-del-room]").addEventListener("click", async (e) => {
+      e.stopPropagation();
       if (!confirm(`Remover a sala "${r.name} - ${r.department}"?`)) return;
       await IndoorAPI.deleteRoom(r.id);
       await refreshAllAdminData();
     });
 
     tbody.appendChild(tr);
+  }
+
+  adminFloorplanViewer?.filterRooms(adminSearchQuery);
+}
+
+async function initAdminFloorplan() {
+  const container = document.getElementById("adminFloorplanView");
+  if (!container) return;
+
+  if (!adminFloorplanViewer) {
+    adminFloorplanViewer = new SvgFloorplanViewer({
+      containerId: "adminFloorplanView",
+      onRoomClick: (roomProps) => {
+        highlightAdminTableRow(roomProps.id);
+      },
+      onFloorChange: (floorId) => {
+        renderAdminFloorSwitcher(floorId);
+      },
+    });
+
+    await adminFloorplanViewer.init();
+
+    document.getElementById("btnAdminZoomIn")?.addEventListener("click", () => adminFloorplanViewer?.zoomIn());
+    document.getElementById("btnAdminZoomOut")?.addEventListener("click", () => adminFloorplanViewer?.zoomOut());
+    document.getElementById("btnAdminResetView")?.addEventListener("click", () => adminFloorplanViewer?.resetView());
+  }
+
+  renderAdminFloorSwitcher(adminFloorplanViewer.currentFloorId);
+}
+
+function renderAdminFloorSwitcher(activeFloorId) {
+  const container = document.getElementById("adminFloorSwitcher");
+  if (!container || !floorsCache) return;
+  container.innerHTML = "";
+
+  for (const fl of floorsCache) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `floor-btn-mini ${fl.id === activeFloorId ? "active" : ""}`;
+    btn.textContent = fl.name;
+    btn.addEventListener("click", async () => {
+      if (adminFloorplanViewer) {
+        await adminFloorplanViewer.loadFloor(fl.id);
+        renderAdminFloorSwitcher(fl.id);
+      }
+    });
+    container.appendChild(btn);
+  }
+}
+
+function updateAdminFloorplanFooter(room) {
+  const container = document.getElementById("adminCompanionFooter");
+  if (!container) return;
+
+  if (!room) {
+    container.innerHTML = `
+      <div class="admin-floorplan-empty">
+        <i class="fas fa-hand-pointer" style="color: #00a6fb;"></i>
+        <span>Clique em qualquer linha da tabela para localizar a sala na planta.</span>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="admin-floorplan-selected">
+      <div>
+        <strong style="color:#00f0ff;">Sala ${room.code}</strong> — <span>${room.name}</span>
+        <div style="font-size:11px; color:#38bdf8;">${room.department} (${room.floor_name})</div>
+      </div>
+      <button type="button" class="btn-action-edit" style="font-size:11.5px; padding:4px 8px;" id="btnQuickEditFromFloorplan">
+        ✏️ Editar
+      </button>
+    </div>
+  `;
+
+  container.querySelector("#btnQuickEditFromFloorplan")?.addEventListener("click", () => {
+    openRoomMapModal(room);
+  });
+}
+
+function highlightAdminTableRow(roomId) {
+  selectedAdminRoomId = Number(roomId);
+  const rows = document.querySelectorAll("#tableRoomsBody tr");
+  rows.forEach((r) => r.classList.remove("table-row-selected"));
+
+  const targetRow = document.querySelector(`#tableRoomsBody tr[data-room-id="${selectedAdminRoomId}"]`);
+  if (targetRow) {
+    targetRow.classList.add("table-row-selected");
+    targetRow.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  const room = roomsCache.find((r) => r.id === selectedAdminRoomId);
+  updateAdminFloorplanFooter(room);
+
+  if (room && adminFloorplanViewer) {
+    if (adminFloorplanViewer.currentFloorId !== room.floor_id) {
+      adminFloorplanViewer.loadFloor(room.floor_id).then(() => {
+        adminFloorplanViewer.highlightRoom(room.id);
+        adminFloorplanViewer.focusRoom(room);
+      });
+    } else {
+      adminFloorplanViewer.highlightRoom(room.id);
+      adminFloorplanViewer.focusRoom(room);
+    }
   }
 }
 
@@ -1186,6 +1312,9 @@ function bindAdminEvents() {
     floorFilter.addEventListener("change", (e) => {
       adminFilterFloorId = e.target.value;
       filterAndRenderAdminRooms();
+      if (adminFilterFloorId !== "all" && adminFloorplanViewer) {
+        adminFloorplanViewer.loadFloor(Number(adminFilterFloorId));
+      }
     });
   }
 
