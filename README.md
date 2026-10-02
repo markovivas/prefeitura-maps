@@ -27,12 +27,13 @@ flowchart LR
 
 ## ✨ Funcionalidades Principais
 
-### 🗺️ Mapa Público Interativo (`/`)
-- **Abertura Padrão no Mapa Interno**: Inicia diretamente focado na planta interna georreferenciada da Prefeitura Municipal (`zoom 19.55`), com botão no topo para alternar entre **🏢 Mapa Interno** e **🌍 Mapa Externo** (satélite/ruas).
-- **Alternância de Pavimentos em Tempo Real**: Seletor flutuante e na barra lateral para alternar entre **Térreo (`T`)** e **1º Andar (`1`)**.
-- **Visualização 2D / 3D**: Alternância instantânea entre planta baixa 2D e extrusão 3D (`fill-extrusion`) com paredes e salas coloridas por categoria.
-- **Busca Inteligente de Setores**: Pesquisa instantânea por código (`101`, `212`), nome da secretaria/setor, categoria ou palavra-chave (ex.: `Licitação`, `Gabinete`, `Procuradoria`, `Auditório`).
-- **Painel de Detalhes e QR Code**: Ao clicar em qualquer setor no mapa ou na lista lateral, exibe código, categoria, pavimento, descrição e botão **📱 QR Code deste local** (gera link direto `/?room=CODIGO` pronto para impressão em placas e totens).
+### 🏛️ Guia de Atendimento e Portal do Cidadão (`/`)
+- **Portal do Cidadão como Protagonista (63% da Tela)**: Interface ampla, acessível e objetiva voltada a resolver a necessidade do cidadão que entra na Prefeitura sem conhecer siglas ou números de salas.
+- **⚡ Acesso Rápido por Serviço ("Mais Buscados")**: Botões de 1 clique para as demandas mais frequentes da população: `💰 IPTU & Tributos`, `📝 Protocolo Geral`, `🤝 Assistência Social`, `🏗️ Obras & Alvarás`, `🪖 Junta Militar`, `⚕️ Saúde`, `♿ Acessibilidade` e `🚻 Banheiros`.
+- **🧠 Busca Inteligente por Linguagem Popular e Sinônimos**: Pesquisa dinâmica que compreende termos do dia a dia (ex: *"segunda via"*, *"renegociar dívida"*, *"alistamento"*, *"bolsa família"*, *"alvará"*, *"farmácia"*, *"remédios"*, *"carteira de identidade"*).
+- **🚶 Orientação "Como Chegar" com Marcos de Referência**: Cada setor apresenta instruções humanas e fáceis (ex: *"Térreo • No saguão principal de atendimento, logo à direita da entrada da Av. Brasil"*).
+- **🗺️ Mapa Discreto de Apoio Visual (37% da Tela)**: Planta arquitetônica emoldurada de forma elegante na lateral direita, funcionando como ferramenta de referência visual rápida (com seletor `Térreo / 1º Andar`, alternância `2D / 3D` e foco automático suave na sala clicada).
+- **📱 Levar Mapa no Celular (QR Code)**: Botão direto em cada sala para o cidadão escanear na portaria/totem e continuar navegando pelo prédio no seu próprio celular.
 
 ### 🛠️ Painel Administrativo com Editor Visual (`/admin`)
 - **Desenho Direto sobre o Prédio**:
@@ -111,7 +112,8 @@ docker compose ps
 | Interface | URL | Descrição |
 | :--- | :--- | :--- |
 | **🗺️ Mapa Indoor Público** | [http://localhost](http://localhost) | Abre direto no Mapa Interno da Prefeitura com busca e seletor de andares |
-| **⚙️ Painel Administrativo** | [http://localhost/admin](http://localhost/admin) | Editor visual de salas/setores sobre o mapa (Retângulo e Polígono Livre) |
+| **🔐 Tela de Login Admin** | [http://localhost/login](http://localhost/login) | Autenticação simples (Usuário: `admin` \| Senha: `admin123`) |
+| **⚙️ Painel Administrativo** | [http://localhost/admin](http://localhost/admin) | Gestão em abas, KPIs, busca e editor visual de salas sobre o mapa |
 | **📄 Swagger UI (OpenAPI)** | [http://localhost:8000/docs](http://localhost:8000/docs) | Documentação interativa da API REST |
 | **❤️ Healthcheck da API** | [http://localhost/api/health](http://localhost/api/health) | Status da API e conexão com o PostGIS |
 

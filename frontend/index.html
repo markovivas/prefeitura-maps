@@ -3,146 +3,357 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prefeitura de Três Corações — Mapa e Navegação Indoor</title>
+  <meta name="color-scheme" content="light only" />
+  <title>Prefeitura de Três Corações — Guia Interno &amp; Localizador de Salas</title>
+
+  <!-- Google Fonts & Font Awesome -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- CSS Institucional Prefeitura de Três Corações -->
+  <link rel="stylesheet" href="/css/styles.css?v=10" />
 </head>
-<body>
-  <!-- Barra Superior -->
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-badge">TC</div>
-      <div>
-        <div class="brand-title">Prefeitura de Três Corações — MG | Navegação Indoor</div>
-        <div class="brand-subtitle">Guia Interativo de Salas, Secretarias e Serviços (Centro Administrativo)</div>
-      </div>
-    </div>
+<body class="template-institucional">
 
-    <div class="topbar-actions">
-      <button id="btnOpenQRModal" class="btn btn-ghost-dark" title="Gerar QR Code para Totem ou Celular">
-        📱 QR Code
-      </button>
-      <a href="/docs" target="_blank" class="btn btn-ghost-dark" title="Documentação Swagger da API FastAPI">
-        ⚡ API Docs
-      </a>
-      <a href="/admin" class="btn btn-primary" title="Painel Administrativo (/admin)">
-        ⚙️ Painel Admin
-      </a>
-    </div>
-  </header>
-
-  <!-- Corpo Principal -->
-  <div class="app-layout">
-    <!-- Painel Lateral (Busca de Salas e Setores) -->
-    <aside class="sidebar">
-      <div class="sidebar-tabs">
-        <div class="sidebar-tab active" style="cursor: default;">
-          🔍 Salas e Setores de Atendimento
-        </div>
-      </div>
-
-      <!-- Catálogo e Busca de Salas -->
-      <div id="panelSearch" class="sidebar-content">
-        <div class="search-box">
-          <span class="search-icon">🔎</span>
-          <input
-            id="searchInput"
-            type="text"
-            class="search-input"
-            placeholder="Buscar sala, código, setor ou serviço (ex: 102, ISS, SEPLAN)..."
-          />
-        </div>
-
-        <div id="floorFilterPills" class="floor-filter-pills"></div>
-
-        <div id="roomsList" class="room-list"></div>
-      </div>
-    </aside>
-
-    <!-- Área do Mapa MapLibre GL JS -->
-    <main class="map-wrapper">
-      <!-- Controles Flutuantes no Topo do Mapa -->
-      <div class="map-overlay-top">
-        <div class="map-card-floating">
-          <button id="btnToggleViewMode" class="btn btn-primary btn-sm">
-            🌍 Visão Externa (Cidade)
-          </button>
-          <button id="btnToggle3D" class="btn btn-outline btn-sm" title="Alternar inclinação 2D/3D">
-            📐 2D / 3D
-          </button>
-        </div>
-
-        <!-- Seletor de Pavimento: [ Térreo ] [ 1º Andar ] -->
-        <div id="floorSwitcher" class="floor-switcher"></div>
-      </div>
-
-      <!-- Mapa -->
-      <div id="map"></div>
-
-      <!-- Banner de Boas-vindas na Visão Externa (OpenStreetMap) -->
-      <div id="outdoorBanner" class="outdoor-banner hidden">
+  <!-- ====================================================================
+       HERO INSTITUCIONAL
+       ==================================================================== -->
+  <section class="tc-hero">
+    <div class="tc-container">
+      <div class="tc-hero-grid">
+        
+        <!-- Coluna Esquerda: Título Direto e Pesquisa -->
         <div>
-          <div id="outdoorBannerTitle" style="font-weight: 700; font-size: 14px;">📍 Prefeitura Municipal de Três Corações — MG</div>
-          <div style="font-size: 12px; color: #cbd5e1;">
-            Av. Brasil, 225 - Jardim América | Clique no prédio ou no botão ao lado para abrir a planta interna.
+          <h1 style="margin-bottom: 6px;">
+            Guia <span class="tc-gradient">Interno</span>
+          </h1>
+
+          <!-- Barra de Pesquisa Hero Integrada -->
+          <div class="tc-hero-search-wrapper" style="margin-top: 12px;">
+            <div class="tc-search-box">
+              <i class="fas fa-magnifying-glass tc-search-icon"></i>
+              <input
+                id="searchInput"
+                type="text"
+                class="tc-search-input"
+                placeholder="Pesquisar sala, setor ou serviço (ex: 110, IPTU, obras, social)..."
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button id="btnClearSearch" class="tc-btn-clear-search hidden" title="Limpar pesquisa">
+                <i class="fas fa-xmark"></i>
+              </button>
+            </div>
           </div>
         </div>
-        <button id="btnEnterIndoorBanner" class="btn btn-emerald">
-          Entrar no mapa interno →
-        </button>
+
+        <!-- Coluna Direita: Card de Destaque Institucional -->
+        <div>
+          <div class="tc-card">
+            <span class="tc-badge tc-badge-green">
+              <i class="fas fa-circle-check"></i> Prédio Aberto ao Público
+            </span>
+
+            <h3 style="margin-top: 15px; font-size: 1.25rem;">
+              Centro Administrativo Dr. Astolpho Gazzola
+            </h3>
+
+            <p style="margin-bottom: 12px; color: #4b5563; font-size: 0.92rem;">
+              <i class="fas fa-location-dot" style="color: var(--azul-principal); margin-right: 6px;"></i>
+              Av. Brasil, 225 — Jardim América, Três Corações - MG
+            </p>
+
+            <div class="tc-highlight-item">
+              <i class="far fa-clock" style="color: var(--azul-principal); font-size: 1.1rem;"></i>
+              <div>
+                <strong>Horário de Atendimento:</strong>
+                <div>08:00 às 17:00 (Segunda a Sexta-feira)</div>
+              </div>
+            </div>
+
+            <div class="tc-highlight-tags">
+              <span class="tc-badge tc-badge-blue"><i class="fas fa-layer-group"></i> 2 Pavimentos</span>
+              <span class="tc-badge tc-badge-blue"><i class="fas fa-door-open"></i> 47 Setores</span>
+              <span class="tc-badge tc-badge-blue"><i class="fas fa-wheelchair"></i> Acessibilidade PCD</span>
+            </div>
+
+            <div class="tc-hero-actions-row" style="display: flex; gap: 8px; margin-top: 18px;">
+              <a href="#localizador" class="tc-btn tc-btn-primary" style="flex: 1.2;">
+                <i class="fas fa-map-location-dot"></i> Ver Salas
+              </a>
+              <button id="btnOpenQRModal" class="tc-btn tc-btn-secondary" style="flex: 1;" title="Abrir no celular via QR Code">
+                <i class="fas fa-qrcode"></i> Celular
+              </button>
+              <a href="/admin" class="tc-btn tc-btn-secondary" style="padding: 11px 14px;" title="Painel Administrativo">
+                <i class="fas fa-user-shield"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       SEÇÃO PRINCIPAL: LOCALIZADOR DE SALAS & MAPA COMPANION
+       ==================================================================== -->
+  <section class="tc-section" id="localizador">
+    <div class="tc-container-fluid">
+      
+      <div class="tc-section-header">
+        <h2 class="tc-section-title">
+          <i class="fas fa-map-location-dot"></i>
+          Salas e Setores de Atendimento
+        </h2>
+
+        <!-- Filtros de Pavimento e Contador de Resultados -->
+        <div class="filter-status-row">
+          <div id="floorFilterPills" class="floor-filter-pills"></div>
+          <span id="searchResultCount" class="tc-badge tc-badge-blue">47 setores</span>
+        </div>
       </div>
 
-      <!-- Card Flutuante de Detalhes da Sala Selecionada -->
-      <div id="roomDetailDrawer" class="room-detail-drawer hidden">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-          <span id="detailRoomCode" class="room-code-badge">101</span>
-          <button id="btnCloseDetailDrawer" class="btn btn-outline btn-sm">✕</button>
+      <!-- Grid Principal: Lista de Setores + Mini-Mapa Discreto Sticky -->
+      <div class="tc-localizador-grid">
+
+        <!-- Lista Rolável com os Cards dos Setores -->
+        <div class="tc-rooms-col">
+          <div id="roomsList" class="portal-room-list"></div>
         </div>
-        <h3 id="detailRoomName" style="margin-top: 6px; font-size: 17px;">Sala 101</h3>
-        <div id="detailRoomDept" style="font-size: 13px; font-weight: 600; color: var(--primary); margin-top: 2px;">
-          Dívida Ativa
+
+        <!-- Coluna do Mapa Discreto de Apoio Visual (Sticky) -->
+        <div class="tc-map-col">
+          <div id="mapCardContainer" class="tc-card tc-map-card">
+            
+            <!-- Topo do Card da Planta CAD -->
+            <div class="map-card-header">
+              <div class="map-header-title">
+                <i class="fas fa-compass-drafting" style="color: var(--azul-brilhante); font-size: 1.2rem;"></i>
+                <div>
+                  <span class="map-title-main">Planta Arquitetônica</span>
+                  <span class="map-title-sub">Projeto Técnico CAD • Três Corações</span>
+                </div>
+              </div>
+
+              <div class="map-header-controls">
+                <div id="floorSwitcher" class="floor-switcher-mini"></div>
+              </div>
+            </div>
+
+            <!-- Canvas da Planta CAD Vetorial Interativa -->
+            <div class="map-canvas-wrapper">
+              <div id="map"></div>
+
+              <!-- Controles de Zoom e Centralização Flutuantes -->
+              <div class="cad-map-zoom-controls">
+                <button id="btnZoomIn" class="cad-zoom-btn" title="Aproximar Planta"><i class="fas fa-plus"></i></button>
+                <button id="btnZoomOut" class="cad-zoom-btn" title="Afastar Planta"><i class="fas fa-minus"></i></button>
+                <button id="btnResetView" class="cad-zoom-btn" title="Centralizar Visualização"><i class="fas fa-arrows-to-dot"></i></button>
+              </div>
+
+              <!-- Dica de Orientação no Mapa -->
+              <div class="map-landmark-badge">
+                <i class="fas fa-door-open"></i> Entrada Principal pela Av. Brasil (Térreo)
+              </div>
+            </div>
+
+            <!-- Rodapé do Card do Mapa com Resumo do Setor Selecionado -->
+            <div id="mapCompanionFooter" class="map-card-footer">
+              <div id="mapSelectedRoomInfo" class="map-room-info-empty">
+                <i class="fas fa-hand-pointer" style="color: var(--azul-principal); font-size: 14px;"></i>
+                <span>Clique em qualquer setor da lista para visualizar a localização no mapa.</span>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div id="detailRoomFloor" style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-top: 4px;">
-          📍 Andar: Térreo
-        </div>
-        <p id="detailRoomDesc" style="font-size: 12.5px; color: var(--text-muted); margin-top: 8px; line-height: 1.45;"></p>
-        <div id="detailRoomHours" style="font-size: 12px; color: var(--text-muted); margin-top: 8px; font-weight: 500;"></div>
+
       </div>
 
-      <!-- Legenda -->
-      <div class="map-legend">
-        <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Legenda de Setores</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:#a7f3d0; border:1px solid #059669;"></span> Recepção / Entrada</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:#bfdbfe; border:1px solid #2563eb;"></span> Atendimento ao Cidadão</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:#ddd6fe; border:1px solid #7c3aed;"></span> Secretarias / Administração</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:#fde68a; border:1px solid #d97706;"></span> Elevador / Escada</div>
-      </div>
-    </main>
-  </div>
+    </div>
+  </section>
 
-  <!-- Modal QR Code -->
+  <!-- ====================================================================
+       SEÇÃO: ORIENTAÇÕES GERAIS AO CIDADÃO
+       ==================================================================== -->
+  <section class="tc-section alt" id="orientacoes">
+    <div class="tc-container">
+      
+      <div class="tc-section-header">
+        <h2 class="tc-section-title">
+          <i class="fas fa-circle-info"></i>
+          Orientações Gerais ao Cidadão
+        </h2>
+      </div>
+
+      <div class="tc-grid">
+
+        <div class="tc-card">
+          <div class="tc-card-icon">
+            <i class="fas fa-wheelchair"></i>
+          </div>
+          <span class="tc-badge tc-badge-green">Acessibilidade Total</span>
+          <h3 style="margin-top: 12px;">Acesso Adaptado PCD</h3>
+          <p>
+            O prédio possui rampa suave de acesso na entrada da Av. Brasil, elevador para o 1º andar e sanitários adaptados em ambos os pavimentos.
+          </p>
+        </div>
+
+        <div class="tc-card">
+          <div class="tc-card-icon">
+            <i class="fas fa-id-card"></i>
+          </div>
+          <span class="tc-badge tc-badge-blue">Documentação</span>
+          <h3 style="margin-top: 12px;">Documentos em Mãos</h3>
+          <p>
+            Para emissão de guias de IPTU, alvarás, processos de obras ou benefícios sociais, apresente documento oficial com foto e CPF.
+          </p>
+        </div>
+
+        <div class="tc-card">
+          <div class="tc-card-icon">
+            <i class="fas fa-mobile-screen-button"></i>
+          </div>
+          <span class="tc-badge tc-badge-yellow">Praticidade</span>
+          <h3 style="margin-top: 12px;">Navegação no Celular</h3>
+          <p>
+            Gere o QR Code de qualquer sala e leve o mapa no seu bolso enquanto caminha pelo prédio sem precisar de aplicativo instalado.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Box Informativo -->
+      <div class="tc-info" style="margin-top: 25px;">
+        <div class="tc-info-icon">
+          <i class="fas fa-circle-exclamation"></i>
+        </div>
+        <div>
+          <strong>Dica para atendimento rápido:</strong>
+          <div>Se você não sabe qual setor procurar, dirija-se à <strong>Recepção / Triagem (Sala 111)</strong> logo na entrada principal pela Av. Brasil. Nossos atendentes indicarão o guichê correto.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       SEÇÃO: CANAIS DE ATENDIMENTO
+       ==================================================================== -->
+  <section class="tc-section" id="contato">
+    <div class="tc-container">
+      
+      <div class="tc-section-header">
+        <h2 class="tc-section-title">
+          <i class="fas fa-phone"></i>
+          Canais de Atendimento
+        </h2>
+      </div>
+
+      <div class="tc-grid">
+
+        <div class="tc-card">
+          <div class="tc-card-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <h3>Telefone Central</h3>
+          <p style="font-size: 1.15rem; font-weight: 700; color: var(--azul-principal); margin: 6px 0;">
+            (35) 3691-1000
+          </p>
+          <p>Central de Atendimento Telefônico • Segunda a Sexta, 08h às 17h</p>
+        </div>
+
+        <div class="tc-card">
+          <div class="tc-card-icon">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <h3>WhatsApp Oficial</h3>
+          <p style="font-size: 1.15rem; font-weight: 700; color: #25D366; margin: 6px 0;">
+            (35) 98835-0000
+          </p>
+          <p>Canais informativos e orientações pelo WhatsApp da Prefeitura.</p>
+        </div>
+
+        <div class="tc-card">
+          <div class="tc-card-icon">
+            <i class="fas fa-location-dot"></i>
+          </div>
+          <h3>Atendimento Presencial</h3>
+          <p style="margin: 6px 0; font-weight: 600; color: var(--azul-escuro);">
+            Centro Administrativo Dr. Astolpho Gazzola
+          </p>
+          <p>Av. Brasil, 225 — Jardim América, Três Corações - MG, CEP 37410-000</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       RODAPÉ INSTITUCIONAL OFICIAL
+       ==================================================================== -->
+  <footer class="tc-footer">
+    <div class="tc-container">
+      <div class="tc-footer-grid">
+
+        <div>
+          <h3>Prefeitura de Três Corações</h3>
+          <p>
+            Portal institucional e localizador de atendimento do Centro Administrativo Dr. Astolpho Gazzola. Cidade de Três Corações — Minas Gerais.
+          </p>
+        </div>
+
+        <div>
+          <h3>Institucional</h3>
+          <ul>
+            <li><a href="https://www.trescoracoes.mg.gov.br" target="_blank" rel="noopener">Portal da Prefeitura</a></li>
+            <li><a href="https://www.trescoracoes.mg.gov.br/secretarias" target="_blank" rel="noopener">Secretarias Municipais</a></li>
+            <li><a href="https://www.trescoracoes.mg.gov.br/servicos" target="_blank" rel="noopener">Carta de Serviços ao Cidadão</a></li>
+            <li><a href="/admin">Acesso Administrativo</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3>Atendimento</h3>
+          <ul>
+            <li><a href="#contato">Canais de Contato</a></li>
+            <li><a href="https://www.trescoracoes.mg.gov.br/ouvidoria" target="_blank" rel="noopener">Ouvidoria Municipal</a></li>
+            <li><a href="https://www.trescoracoes.mg.gov.br/transparencia" target="_blank" rel="noopener">Portal da Transparência</a></li>
+            <li><a href="#localizador">Localizador de Salas</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="tc-footer-bottom">
+        &copy; 2026 Prefeitura de Três Corações. Todos os direitos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====================================================================
+       MODAL QR CODE
+       ==================================================================== -->
   <div id="qrModal" class="modal-backdrop hidden">
-    <div style="display:flex; justify-content:space-between; align-items:center;" class="modal-box">
-      <div style="width:100%; display:flex; flex-direction:column; gap:12px;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <h3 style="font-size:16px;">📱 QR Code do Mapa / Setor</h3>
-          <button id="btnCloseQRModal" class="btn btn-outline btn-sm">✕</button>
-        </div>
-        <p style="font-size:13px; color:var(--text-muted); line-height:1.45;">
-          Aponte a câmera do celular para abrir o mapa diretamente no setor selecionado:
-        </p>
-        <div style="display:flex; justify-content:center; padding: 10px; background: var(--bg-muted); border-radius: 10px;">
-          <img id="qrCodeImage" src="" alt="QR Code do Setor" width="180" height="180" />
-        </div>
-        <input id="qrUrlInput" type="text" class="form-control" readonly />
+    <div class="modal-box tc-card">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fas fa-mobile-screen-button"></i> Levar Mapa no Celular</h3>
+        <button id="btnCloseQRModal" class="btn-modal-close" title="Fechar">✕</button>
       </div>
+      <p class="modal-desc">
+        Aponte a câmera do seu celular para abrir o mapa diretamente no setor selecionado e navegar pelo prédio:
+      </p>
+      <div class="modal-qr-container">
+        <img id="qrCodeImage" src="" alt="QR Code do Setor" width="180" height="180" />
+      </div>
+      <input id="qrUrlInput" type="text" class="modal-url-input" readonly />
     </div>
   </div>
 
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <script type="module" src="/js/app.js?v=6"></script>
+  <script type="module" src="/js/app.js?v=10"></script>
 </body>
 </html>

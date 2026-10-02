@@ -3,411 +3,304 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel Administrativo (/admin) — Prefeitura de Três Corações</title>
+  <title>Painel Administrativo & Configurações — Prefeitura de Três Corações</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/styles.css" />
-  <style>
-    body {
-      overflow-y: auto;
-      height: auto;
-      min-height: 100vh;
-    }
-    .admin-container {
-      max-width: 1220px;
-      margin: 24px auto 60px;
-      padding: 0 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-    }
-    .stat-card {
-      background: #fff;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow-sm);
-    }
-    .stat-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-    .stat-value {
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--primary);
-      margin-top: 6px;
-    }
-    .admin-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    .admin-section {
-      background: #fff;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .admin-section.full-width {
-      grid-column: 1 / -1;
-    }
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 10px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-    }
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-    .data-table th,
-    .data-table td {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border-color);
-      text-align: left;
-      vertical-align: top;
-    }
-    .data-table th {
-      background: var(--bg-muted);
-      font-weight: 700;
-      color: var(--text-muted);
-      font-size: 12px;
-      text-transform: uppercase;
-    }
-    .inline-form {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-      background: var(--bg-muted);
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-      align-items: end;
-    }
-    .draw-cta-banner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
-      border: 1px dashed #3b82f6;
-      border-radius: 12px;
-      padding: 16px 18px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .draw-cta-banner:hover {
-      border-color: #1d4ed8;
-      box-shadow: var(--shadow-sm);
-    }
-
-    /* Modal de Desenho no Mapa */
-    .room-map-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(3px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      padding: 18px;
-    }
-    .room-map-modal-backdrop.hidden {
-      display: none !important;
-    }
-    .room-map-modal-box {
-      background: #fff;
-      width: 95vw;
-      max-width: 1260px;
-      height: 88vh;
-      border-radius: 16px;
-      box-shadow: var(--shadow-lg);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-    }
-    .room-map-modal-header {
-      padding: 14px 20px;
-      background: var(--bg-dark);
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .room-map-modal-body {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 390px;
-      overflow: hidden;
-    }
-    .draw-map-column {
-      position: relative;
-      height: 100%;
-      background: #e2e8f0;
-    }
-    #adminDrawMap {
-      width: 100%;
-      height: 100%;
-      cursor: crosshair;
-    }
-    .draw-toolbar {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      right: 52px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 10;
-      pointer-events: none;
-    }
-    .draw-toolbar-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.97);
-      padding: 6px;
-      border-radius: 10px;
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border-color);
-      pointer-events: auto;
-    }
-    .draw-bottom-hud {
-      position: absolute;
-      bottom: 14px;
-      left: 14px;
-      right: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      z-index: 10;
-      pointer-events: none;
-    }
-    .draw-status-pill {
-      background: rgba(15, 23, 42, 0.94);
-      color: #fff;
-      padding: 9px 16px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
-      box-shadow: var(--shadow-md);
-      border: 1.5px solid #3b82f6;
-    }
-    .draw-metrics-pill {
-      background: #ea580c;
-      color: #fff;
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      box-shadow: var(--shadow-md);
-      border: 2px solid #fff;
-    }
-    .draw-metrics-pill.hidden {
-      display: none !important;
-    }
-    .draw-form-column {
-      padding: 20px;
-      overflow-y: auto;
-      border-left: 1px solid var(--border-color);
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    textarea.form-control {
-      resize: vertical;
-      min-height: 84px;
-      font-family: inherit;
-      line-height: 1.45;
-    }
-    @media (max-width: 960px) {
-      .admin-grid {
-        grid-template-columns: 1fr;
-      }
-      .room-map-modal-body {
-        grid-template-columns: 1fr;
-        grid-template-rows: 50% 50%;
-      }
-      .draw-form-column {
-        border-left: none;
-        border-top: 1px solid var(--border-color);
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/css/admin.css?v=1" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-badge">TC</div>
-      <div>
-        <div class="brand-title">Painel Administrativo (/admin) — Prefeitura de Três Corações</div>
-        <div class="brand-subtitle">Gestão de Prédios, Andares e Desenho de Salas/Setores no Mapa</div>
-      </div>
-    </div>
 
-    <div class="topbar-actions">
-      <a href="/docs" target="_blank" class="btn btn-ghost-dark">⚡ Swagger API</a>
-      <a href="/" class="btn btn-emerald">🗺️ Voltar ao Mapa Interativo</a>
-    </div>
-  </header>
-
-  <main class="admin-container">
-    <!-- Indicadores Gerais -->
-    <section class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-label">Prédios</div>
-        <div id="statBuildings" class="stat-value">-</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Andares / Pavimentos</div>
-        <div id="statFloors" class="stat-value">-</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Salas e Setores</div>
-        <div id="statRooms" class="stat-value">-</div>
-      </div>
-    </section>
-
-    <div class="admin-grid">
-      <!-- 1. Prédios -->
-      <section class="admin-section">
-        <div class="section-header">
-          <h2 class="section-title">🏢 Prédio Principal</h2>
+  <!-- ========================================================================
+       TELA DE LOGIN ADMINISTRATIVO
+       ======================================================================== -->
+  <div id="adminLoginView" class="login-view">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="brand-badge-lg">TC</div>
+        <div>
+          <h1 class="login-title">Acesso Administrativo</h1>
+          <p class="login-subtitle">Prefeitura Municipal de Três Corações — MG<br/>Configurações e Gestão do Mapa Indoor</p>
         </div>
-        <form id="formBuilding" style="display:flex; flex-direction:column; gap:10px;">
-          <input type="hidden" id="buildingId" value="1" />
-          <div class="form-group">
-            <label class="form-label">Nome do Prédio</label>
-            <input type="text" id="buildingName" class="form-control" required />
+      </div>
+
+      <div id="loginErrorMsg" class="login-error hidden">
+        <span>⚠️</span>
+        <span id="loginErrorText">Usuário ou senha incorretos.</span>
+      </div>
+
+      <form id="formAdminLogin" class="login-form">
+        <div class="form-group">
+          <label class="form-label" for="loginUsername">👤 Usuário</label>
+          <input
+            type="text"
+            id="loginUsername"
+            class="form-control"
+            placeholder="Digite o usuário (ex: admin)"
+            required
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">🔑 Senha</label>
+          <input
+            type="password"
+            id="loginPassword"
+            class="form-control"
+            placeholder="Digite sua senha"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" id="btnLoginSubmit" class="login-btn">
+          <span>Entrar no Painel</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <div class="login-tip">
+        💡 <strong>Acesso Padrão:</strong> Usuário: <code>admin</code> | Senha: <code>admin123</code>
+      </div>
+
+      <a href="/" class="login-back-link">← Voltar ao Mapa Público</a>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       DASHBOARD ADMINISTRATIVO MODERNO
+       ======================================================================== -->
+  <div id="adminDashboardView" class="admin-dashboard-view hidden">
+    <!-- Header Superior -->
+    <header class="admin-header">
+      <div class="admin-brand">
+        <div class="brand-badge-admin">TC</div>
+        <div class="admin-title-group">
+          <div class="admin-title">Prefeitura Municipal de Três Corações</div>
+          <div class="admin-subtitle">Painel de Configurações & Gestão Indoor</div>
+        </div>
+      </div>
+
+      <div class="admin-nav-actions">
+        <a href="/" class="btn-action-edit" style="text-decoration:none; background: rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:#fff;">
+          🗺️ Mapa Público
+        </a>
+        <a href="/docs" target="_blank" class="btn-action-edit" style="text-decoration:none; background: rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:#fff;">
+          ⚡ Swagger API
+        </a>
+        <div class="user-badge">
+          <span>👤</span>
+          <span id="adminUsernameBadge">admin</span>
+        </div>
+        <button type="button" id="btnLogout" class="btn-admin-logout" title="Sair da sessão administrativa">
+          🚪 Sair
+        </button>
+      </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="admin-container">
+      <!-- Cards de Estatísticas / KPIs -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Prédio Principal</span>
+            <span id="statBuildings" class="stat-value">1</span>
           </div>
-          <div class="form-group">
-            <label class="form-label">Endereço</label>
-            <input type="text" id="buildingAddress" class="form-control" required />
+          <div class="stat-icon-box stat-icon-blue">🏢</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Andares Ativos</span>
+            <span id="statFloors" class="stat-value">-</span>
           </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            <div class="form-group">
-              <label class="form-label">Latitude</label>
-              <input type="number" step="any" id="buildingLat" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Longitude</label>
-              <input type="number" step="any" id="buildingLon" class="form-control" required />
-            </div>
+          <div class="stat-icon-box stat-icon-green">🪜</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Salas Mapeadas</span>
+            <span id="statRooms" class="stat-value">-</span>
           </div>
-          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">
-            💾 Salvar Alterações do Prédio
-          </button>
-        </form>
+          <div class="stat-icon-box stat-icon-purple">🚪</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Editor Georreferenciado</span>
+            <span class="stat-value" style="font-size: 18px; color: #059669; font-weight:700;">Ativo (PostGIS)</span>
+          </div>
+          <div class="stat-icon-box stat-icon-amber">📐</div>
+        </div>
       </section>
 
-      <!-- 2. Andares -->
-      <section class="admin-section">
-        <div class="section-header">
-          <h2 class="section-title">🪜 Andares / Pavimentos</h2>
-        </div>
+      <!-- Navegação em Abas (Tabs) -->
+      <nav class="admin-tabs-nav">
+        <button type="button" id="tabBtnRooms" class="admin-tab-btn active">
+          <span>🚪 Salas e Setores</span>
+          <span id="tabBadgeRooms" class="tab-badge">0</span>
+        </button>
+        <button type="button" id="tabBtnFloors" class="admin-tab-btn">
+          <span>🪜 Andares e Pavimentos</span>
+          <span id="tabBadgeFloors" class="tab-badge">0</span>
+        </button>
+        <button type="button" id="tabBtnBuilding" class="admin-tab-btn">
+          <span>🏢 Dados do Prédio</span>
+        </button>
+      </nav>
 
-        <form id="formAddFloor" class="inline-form">
-          <div class="form-group">
-            <label class="form-label">Nome (ex: 2º Andar)</label>
-            <input type="text" id="newFloorName" class="form-control" placeholder="2º Andar" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Nível (0, 1, 2...)</label>
-            <input type="number" id="newFloorLevel" class="form-control" placeholder="2" required />
-          </div>
-          <button type="submit" class="btn btn-primary">+ Adicionar Andar</button>
-        </form>
-
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Andar</th>
-              <th>Nível</th>
-              <th>Salas</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tableFloorsBody"></tbody>
-        </table>
-      </section>
-
-      <!-- 3. Salas e Setores de Atendimento -->
-      <section class="admin-section full-width">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">🚪 Salas e Setores de Atendimento</h2>
-            <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">
-              Clique para abrir o mapa do pavimento, desenhar a área do setor e preencher Código, Sala, Departamento, Andar e Descrição.
+      <!-- ====================================================================
+           ABA 1: SALAS E SETORES DE ATENDIMENTO
+           ==================================================================== -->
+      <div id="tabContentRooms" class="tab-pane active">
+        <!-- Barra de Ações: Busca, Filtro de Andar e Botão de Desenho -->
+        <div class="admin-action-bar">
+          <div class="action-bar-filters">
+            <div class="admin-search-wrapper">
+              <span class="admin-search-icon">🔎</span>
+              <input
+                type="text"
+                id="adminSearchInput"
+                class="admin-search-input"
+                placeholder="Buscar por código, sala, secretaria..."
+                autocomplete="off"
+              />
             </div>
+
+            <select id="adminFloorFilter" class="admin-floor-select">
+              <option value="all">Todos os Andares</option>
+              <option value="1">Térreo (Nível 0)</option>
+              <option value="2">1º Andar (Nível 1)</option>
+            </select>
           </div>
-          <button type="button" id="btnOpenDrawRoomModal" class="btn btn-primary">
-            🗺️ + Desenhar Novo Setor / Sala no Mapa
+
+          <button type="button" id="btnOpenDrawRoomModal" class="btn-cta-draw">
+            <span>🗺️ + Desenhar Nova Sala no Mapa</span>
           </button>
         </div>
 
+        <!-- Banner de Destaque -->
         <div id="ctaDrawRoomBanner" class="draw-cta-banner">
           <div>
-            <div style="font-weight: 700; font-size: 14px; color: var(--primary);">
-              ✏️ Desenhar Sala ou Setor de Atendimento Diretamente no Mapa
+            <div style="font-weight: 700; font-size: 14px; color: #1d4ed8;">
+              ✏️ Desenhar Sala ou Setor Diretamente sobre o Prédio
             </div>
-            <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 3px;">
-              Clique aqui para abrir a planta do andar, desenhar os limites da sala com o mouse e informar Código, Sala, Departamento/Serviço, Andar e Descrição.
+            <div style="font-size: 12.5px; color: #64748b; margin-top: 3px;">
+              Abra a planta baixa com 1 clique, use <strong>Retângulo</strong> ou <strong>Polígono Livre</strong> com cantos arrastáveis e salve no PostGIS.
             </div>
           </div>
-          <span class="btn btn-emerald btn-sm">Abrir Mapa de Cadastro →</span>
+          <button type="button" class="btn-action-edit" style="background: #059669; color: #fff; border-color: #059669; padding: 8px 14px;">
+            Abrir Editor Visual →
+          </button>
         </div>
 
-        <div style="overflow-x:auto;">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Código</th>
-                <th>Sala</th>
-                <th>Departamento / Serviço</th>
-                <th>Andar</th>
-                <th>Descrição sobre a Sala</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tableRoomsBody"></tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-  </main>
+        <!-- Tabela de Salas -->
+        <div class="admin-table-card">
+          <div class="table-header-info">
+            <span class="table-title">Setores Cadastrados</span>
+            <span id="adminRoomsCountLabel" class="table-count-label">47 setores</span>
+          </div>
 
-  <!-- Modal Visual: Desenhar e Cadastrar/Editar Sala no Mapa -->
+          <div class="data-table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 80px;">Código</th>
+                  <th>Sala / Ambiente</th>
+                  <th>Secretaria / Órgão</th>
+                  <th style="width: 110px;">Andar</th>
+                  <th>Horário</th>
+                  <th style="width: 180px; text-align: right;">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tableRoomsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           ABA 2: ANDARES E PAVIMENTOS
+           ==================================================================== -->
+      <div id="tabContentFloors" class="tab-pane">
+        <div class="admin-card-section">
+          <h2 class="section-header-title">🪜 Pavimentos Cadastrados</h2>
+          
+          <div class="data-table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 80px;">ID</th>
+                  <th>Nome do Andar</th>
+                  <th>Nível Numérico</th>
+                  <th>Total de Salas</th>
+                  <th style="width: 120px; text-align: right;">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tableFloorsBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-card-section">
+          <h2 class="section-header-title">➕ Adicionar Novo Pavimento</h2>
+          <form id="formAddFloor" class="inline-form-card">
+            <div class="form-group">
+              <label class="form-label">Nome do Andar</label>
+              <input type="text" id="newFloorName" class="form-control" placeholder="Ex: 2º Andar / Subsolo" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nível Numérico (0, 1, 2...)</label>
+              <input type="number" id="newFloorLevel" class="form-control" placeholder="2" required />
+            </div>
+            <button type="submit" class="btn-cta-draw" style="height: 42px;">
+              + Cadastrar Andar
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           ABA 3: DADOS DO PRÉDIO
+           ==================================================================== -->
+      <div id="tabContentBuilding" class="tab-pane">
+        <div class="admin-card-section" style="max-width: 760px;">
+          <h2 class="section-header-title">🏢 Configuração da Sede Municipal</h2>
+          <form id="formBuilding" style="display:flex; flex-direction:column; gap:16px;">
+            <input type="hidden" id="buildingId" value="1" />
+            <div class="form-group">
+              <label class="form-label">Nome Oficial do Prédio</label>
+              <input type="text" id="buildingName" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Endereço Completo</label>
+              <input type="text" id="buildingAddress" class="form-control" required />
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+              <div class="form-group">
+                <label class="form-label">Latitude</label>
+                <input type="number" step="any" id="buildingLat" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Longitude</label>
+                <input type="number" step="any" id="buildingLon" class="form-control" required />
+              </div>
+            </div>
+            <button type="submit" class="btn-cta-draw" style="align-self:flex-start;">
+              💾 Salvar Dados do Prédio
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       MODAL VISUAL: DESENHAR E CADASTRAR/EDITAR SALA NO MAPA
+       ======================================================================== -->
   <div id="roomMapModal" class="room-map-modal-backdrop hidden">
     <div class="room-map-modal-box">
       <div class="room-map-modal-header">
@@ -419,7 +312,7 @@
             Selecione o andar, clique no mapa para desenhar o setor e preencha os dados ao lado.
           </div>
         </div>
-        <button type="button" id="btnCloseRoomMapModal" class="btn btn-ghost-dark btn-sm">✕ Fechar</button>
+        <button type="button" id="btnCloseRoomMapModal" class="btn-action-delete" style="color:#fff; background:rgba(255,255,255,0.15); border-color:rgba(255,255,255,0.2);">✕ Fechar</button>
       </div>
 
       <div class="room-map-modal-body">
@@ -427,31 +320,31 @@
         <div class="draw-map-column">
           <div class="draw-toolbar">
             <div class="draw-toolbar-group">
-              <button type="button" id="btnModeRect" class="btn btn-primary btn-sm" title="Arraste com o mouse ou clique em 2 cantos opostos para criar um retângulo">
+              <button type="button" id="btnModeRect" class="btn-action-edit" style="background:#1d4ed8; color:#fff; border-color:#1d4ed8;" title="Arraste com o mouse ou clique em 2 cantos opostos para criar um retângulo">
                 📐 Retângulo (Arrastar ou 2 Cliques)
               </button>
-              <button type="button" id="btnModePoly" class="btn btn-outline btn-sm" title="Clique em cada canto para desenhar um formato personalizado">
+              <button type="button" id="btnModePoly" class="btn-action-edit" title="Clique em cada canto para desenhar um formato personalizado">
                 ✏️ Polígono Livre
               </button>
-              <button type="button" id="btnModePan" class="btn btn-outline btn-sm" title="Mover e navegar pelo mapa livremente">
+              <button type="button" id="btnModePan" class="btn-action-edit" title="Mover e navegar pelo mapa livremente">
                 🖐️ Mover Mapa
               </button>
             </div>
 
             <div class="draw-toolbar-group">
-              <button type="button" id="btnLockPoly" class="btn btn-emerald btn-sm hidden" title="Fixar/fechar o polígono atual no mapa (ou dê duplo-clique)">
+              <button type="button" id="btnLockPoly" class="btn-action-edit hidden" style="background:#059669; color:#fff; border-color:#059669;" title="Fixar/fechar o polígono atual no mapa (ou dê duplo-clique)">
                 🔒 Fixar Polígono
               </button>
-              <button type="button" id="btnFitFloor" class="btn btn-outline btn-sm" title="Centralizar o mapa na Prefeitura">
-                🔍 Centralizar Mapa
+              <button type="button" id="btnFitFloor" class="btn-action-edit" title="Centralizar o mapa na Prefeitura">
+                🔍 Centralizar
               </button>
-              <button type="button" id="btnToggleOtherRooms" class="btn btn-outline btn-sm" title="Mostrar ou ocultar as outras salas cadastradas neste andar">
+              <button type="button" id="btnToggleOtherRooms" class="btn-action-edit" title="Mostrar ou ocultar as outras salas cadastradas neste andar">
                 👁️ Outras Salas: Visíveis
               </button>
-              <button type="button" id="btnUndoVertex" class="btn btn-outline btn-sm" title="Desfazer último ponto">
+              <button type="button" id="btnUndoVertex" class="btn-action-edit" title="Desfazer último ponto">
                 ↩️ Desfazer
               </button>
-              <button type="button" id="btnClearDraw" class="btn btn-outline btn-sm" title="Apagar desenho atual para começar de novo">
+              <button type="button" id="btnClearDraw" class="btn-action-edit" title="Apagar desenho atual para começar de novo">
                 🗑️ Limpar
               </button>
             </div>
@@ -534,11 +427,11 @@
             </div>
           </div>
 
-          <div style="margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border-color); display: flex; gap: 8px;">
-            <button type="submit" class="btn btn-primary" style="flex: 1;">
+          <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-color); display: flex; gap: 10px;">
+            <button type="submit" class="btn-cta-draw" style="flex: 1; justify-content: center;">
               💾 Salvar Setor no Mapa
             </button>
-            <button type="button" id="btnCancelRoomModal" class="btn btn-outline">
+            <button type="button" id="btnCancelRoomModal" class="btn-action-edit" style="padding: 10px 16px;">
               Cancelar
             </button>
           </div>
@@ -548,6 +441,6 @@
   </div>
 
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <script type="module" src="/js/admin.js?v=4"></script>
+  <script type="module" src="/js/admin.js?v=5"></script>
 </body>
 </html>

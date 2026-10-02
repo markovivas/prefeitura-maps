@@ -45,3 +45,9 @@ class RoomUpdate(BaseModel):
     description: Optional[str] = None
     opening_hours: Optional[str] = None
     geometry: Optional[Dict[str, Any]] = None
+
+
+class LoginRequest(BaseModel):
+    username: str = Field(..., example="admin")
+    password: str = Field(..., example="admin123")
+

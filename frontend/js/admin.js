@@ -22,10 +22,32 @@ let editingRoomId = null;
 let currentFloorGeoJSON = null;
 let showOtherRooms = true;
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await refreshAllAdminData();
+const AUTH_KEY = "tc_indoor_admin_auth";
+let adminSearchQuery = "";
+let adminFilterFloorId = "all";
+
+document.addEventListener("DOMContentLoaded", () => {
   bindAdminEvents();
+  checkAuth();
 });
+
+function checkAuth() {
+  const token = sessionStorage.getItem(AUTH_KEY) || localStorage.getItem(AUTH_KEY);
+  const loginView = document.getElementById("adminLoginView");
+  const dashView = document.getElementById("adminDashboardView");
+
+  if (token) {
+    loginView?.classList.add("hidden");
+    dashView?.classList.remove("hidden");
+    const user = JSON.parse(sessionStorage.getItem("tc_indoor_admin_user") || '{"username":"admin"}');
+    const badge = document.getElementById("adminUsernameBadge");
+    if (badge) badge.textContent = user.username || "admin";
+    refreshAllAdminData();
+  } else {
+    loginView?.classList.remove("hidden");
+    dashView?.classList.add("hidden");
+  }
+}
 
 async function refreshAllAdminData() {
   try {
@@ -44,6 +66,11 @@ async function refreshAllAdminData() {
     document.getElementById("statFloors").textContent = stats.floors_count;
     document.getElementById("statRooms").textContent = stats.rooms_count;
 
+    const badgeRooms = document.getElementById("tabBadgeRooms");
+    if (badgeRooms) badgeRooms.textContent = stats.rooms_count;
+    const badgeFloors = document.getElementById("tabBadgeFloors");
+    if (badgeFloors) badgeFloors.textContent = stats.floors_count;
+
     if (buildingCache) {
       document.getElementById("buildingId").value = buildingCache.id;
       document.getElementById("buildingName").value = buildingCache.name;
@@ -54,7 +81,8 @@ async function refreshAllAdminData() {
 
     renderFloorsTable(floors);
     renderModalFloorSelect(floors);
-    renderRoomsTable(rooms);
+    populateAdminFloorFilter(floors);
+    filterAndRenderAdminRooms();
   } catch (err) {
     console.error("Erro no painel admin:", err);
     alert(`Erro ao carregar dados do painel: ${err.message}`);
@@ -63,16 +91,17 @@ async function refreshAllAdminData() {
 
 function renderFloorsTable(floors) {
   const tbody = document.getElementById("tableFloorsBody");
+  if (!tbody) return;
   tbody.innerHTML = "";
   for (const fl of floors) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>#${fl.id}</td>
+      <td><strong>#${fl.id}</strong></td>
       <td><strong>${fl.name}</strong></td>
       <td>Nível ${fl.level}</td>
-      <td>${fl.rooms_count} salas</td>
-      <td>
-        <button class="btn btn-outline btn-sm" data-del-floor="${fl.id}">Excluir</button>
+      <td><span class="tab-badge" style="background:#dbeafe; color:#1d4ed8; font-weight:700;">${fl.rooms_count} salas</span></td>
+      <td style="text-align: right;">
+        <button class="btn-action-delete" data-del-floor="${fl.id}">🗑️ Excluir</button>
       </td>
     `;
     tr.querySelector("[data-del-floor]").addEventListener("click", async () => {
@@ -86,6 +115,7 @@ function renderFloorsTable(floors) {
 
 function renderModalFloorSelect(floors) {
   const sel = document.getElementById("modalRoomFloorId");
+  if (!sel) return;
   sel.innerHTML = "";
   for (const fl of floors) {
     const opt = document.createElement("option");
@@ -95,24 +125,73 @@ function renderModalFloorSelect(floors) {
   }
 }
 
-function renderRoomsTable(rooms) {
+function populateAdminFloorFilter(floors) {
+  const sel = document.getElementById("adminFloorFilter");
+  if (!sel) return;
+  const currentVal = sel.value;
+  sel.innerHTML = '<option value="all">Todos os Andares</option>';
+  for (const fl of floors) {
+    const opt = document.createElement("option");
+    opt.value = fl.id;
+    opt.textContent = `${fl.name} (Nível ${fl.level})`;
+    sel.appendChild(opt);
+  }
+  if ([...sel.options].some((o) => o.value === currentVal)) {
+    sel.value = currentVal;
+  }
+}
+
+function filterAndRenderAdminRooms() {
+  const q = adminSearchQuery.trim().toLowerCase();
+  const filtered = roomsCache.filter((r) => {
+    if (adminFilterFloorId !== "all" && String(r.floor_id) !== String(adminFilterFloorId)) {
+      return false;
+    }
+    if (!q) return true;
+    return (
+      r.code.toLowerCase().includes(q) ||
+      r.name.toLowerCase().includes(q) ||
+      r.department.toLowerCase().includes(q) ||
+      (r.description && r.description.toLowerCase().includes(q))
+    );
+  });
+
+  const countLabel = document.getElementById("adminRoomsCountLabel");
+  if (countLabel) {
+    countLabel.textContent = `${filtered.length} ${filtered.length === 1 ? "setor" : "setores"}`;
+  }
+
+  renderRoomsTableRows(filtered);
+}
+
+function renderRoomsTableRows(rooms) {
   const tbody = document.getElementById("tableRoomsBody");
+  if (!tbody) return;
   tbody.innerHTML = "";
+
+  if (rooms.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center; padding: 28px; color: var(--text-muted);">
+          Nenhuma sala ou setor encontrado para o filtro aplicado.
+        </td>
+      </tr>
+    `;
+    return;
+  }
 
   for (const r of rooms) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><span class="room-code-badge cat-${r.category}">${r.code}</span></td>
+      <td><span class="code-pill cat-${r.category}">${r.code}</span></td>
       <td><strong>${r.name}</strong></td>
-      <td>${r.department}</td>
-      <td><span class="room-floor-tag">${r.floor_name}</span></td>
-      <td style="max-width: 340px; color: var(--text-muted); line-height: 1.4;">
-        ${r.description || "<em style='color:#94a3b8;'>Sem descrição</em>"}
-      </td>
-      <td style="white-space: nowrap;">
-        <div style="display:flex; gap:6px;">
-          <button class="btn btn-outline btn-sm" data-edit-room="${r.id}">✏️ Editar / Mapa</button>
-          <button class="btn btn-outline btn-sm" data-del-room="${r.id}">Excluir</button>
+      <td style="color:#2563eb; font-weight:500;">${r.department}</td>
+      <td><span class="floor-tag-table">📍 ${r.floor_name}</span></td>
+      <td style="font-size:12px; color:var(--text-muted);">${r.opening_hours || "08:00 às 17:00"}</td>
+      <td style="text-align: right;">
+        <div class="table-actions" style="justify-content: flex-end;">
+          <button class="btn-action-edit" data-edit-room="${r.id}">✏️ Editar / Desenho</button>
+          <button class="btn-action-delete" data-del-room="${r.id}" title="Excluir sala">🗑️</button>
         </div>
       </td>
     `;
@@ -220,31 +299,7 @@ async function ensureAdminDrawMapInitialized() {
 
   drawMap = new maplibregl.Map({
     container: "adminDrawMap",
-    style: {
-      version: 8,
-      glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
-      sources: {
-        osm: {
-          type: "raster",
-          tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-          tileSize: 256,
-          maxzoom: 19,
-          attribution: "© OpenStreetMap contributors",
-        },
-      },
-      layers: [
-        {
-          id: "osm-base",
-          type: "raster",
-          source: "osm",
-          minzoom: 0,
-          maxzoom: 22,
-          paint: {
-            "raster-opacity": 1.0,
-          },
-        },
-      ],
-    },
+    style: "https://tiles.openfreemap.org/styles/dark",
     center,
     zoom: 19.2,
     pitch: 0,
@@ -307,7 +362,7 @@ function setupDrawMapLayers() {
     source: "admin-floor-base",
     filter: ["==", ["get", "layer_type"], "room"],
     paint: {
-      "line-color": "#1e293b",
+      "line-color": "#38bdf8",
       "line-width": 2,
       "line-dasharray": [2, 2],
     },
@@ -320,14 +375,14 @@ function setupDrawMapLayers() {
     filter: ["==", ["get", "layer_type"], "room_label"],
     layout: {
       "text-field": ["concat", ["get", "code"], " - ", ["get", "name"]],
-      "text-font": ["Open Sans Semibold"],
+      "text-font": ["Noto Sans Regular"],
       "text-size": 11,
       "text-anchor": "center",
     },
     paint: {
-      "text-color": "#0f172a",
-      "text-halo-color": "#ffffff",
-      "text-halo-width": 2,
+      "text-color": "#f0f9ff",
+      "text-halo-color": "#040d1a",
+      "text-halo-width": 2.5,
     },
   });
 
@@ -1047,6 +1102,93 @@ function toggleOtherRoomsVisibility() {
 }
 
 function bindAdminEvents() {
+  // Login Administrativo
+  const loginForm = document.getElementById("formAdminLogin");
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const usernameInput = document.getElementById("loginUsername");
+      const passwordInput = document.getElementById("loginPassword");
+      const errorMsg = document.getElementById("loginErrorMsg");
+      const errorText = document.getElementById("loginErrorText");
+      const submitBtn = document.getElementById("btnLoginSubmit");
+
+      try {
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = "<span>Entrando...</span>";
+        }
+        errorMsg?.classList.add("hidden");
+
+        const res = await IndoorAPI.login(usernameInput.value.trim(), passwordInput.value);
+        if (res.token) {
+          sessionStorage.setItem(AUTH_KEY, res.token);
+          sessionStorage.setItem(
+            "tc_indoor_admin_user",
+            JSON.stringify(res.user || { username: usernameInput.value })
+          );
+          checkAuth();
+        }
+      } catch (err) {
+        errorMsg?.classList.remove("hidden");
+        if (errorText) errorText.textContent = err.message || "Usuário ou senha incorretos.";
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = "<span>Entrar no Painel</span><span>→</span>";
+        }
+      }
+    });
+  }
+
+  // Logout
+  const logoutBtn = document.getElementById("btnLogout");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      sessionStorage.removeItem(AUTH_KEY);
+      localStorage.removeItem(AUTH_KEY);
+      sessionStorage.removeItem("tc_indoor_admin_user");
+      checkAuth();
+    });
+  }
+
+  // Navegação por Abas (Tabs)
+  const tabs = [
+    { btn: "tabBtnRooms", pane: "tabContentRooms" },
+    { btn: "tabBtnFloors", pane: "tabContentFloors" },
+    { btn: "tabBtnBuilding", pane: "tabContentBuilding" },
+  ];
+
+  tabs.forEach(({ btn, pane }) => {
+    const btnEl = document.getElementById(btn);
+    if (!btnEl) return;
+    btnEl.addEventListener("click", () => {
+      tabs.forEach((t) => {
+        document.getElementById(t.btn)?.classList.remove("active");
+        document.getElementById(t.pane)?.classList.remove("active");
+      });
+      btnEl.classList.add("active");
+      document.getElementById(pane)?.classList.add("active");
+    });
+  });
+
+  // Busca e Filtro de Andar na Tabela de Salas do Admin
+  const searchInput = document.getElementById("adminSearchInput");
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      adminSearchQuery = e.target.value;
+      filterAndRenderAdminRooms();
+    });
+  }
+
+  const floorFilter = document.getElementById("adminFloorFilter");
+  if (floorFilter) {
+    floorFilter.addEventListener("change", (e) => {
+      adminFilterFloorId = e.target.value;
+      filterAndRenderAdminRooms();
+    });
+  }
+
   // Salvar Prédio
   document.getElementById("formBuilding").addEventListener("submit", async (e) => {
     e.preventDefault();

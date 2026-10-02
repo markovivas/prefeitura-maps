@@ -10,6 +10,7 @@ from app.schemas import (
     FloorCreate,
     RoomCreate,
     RoomUpdate,
+    LoginRequest,
 )
 
 app = FastAPI(
@@ -669,3 +670,25 @@ def get_admin_stats():
             """
         )
         return dict(cur.fetchone())
+
+
+# ============================================================================
+# AUTENTICAÇÃO ADMINISTRATIVA (/api/auth/login)
+# ============================================================================
+
+@app.post("/api/auth/login", tags=["Autenticação"])
+def admin_login(creds: LoginRequest):
+    """Autentica o usuário para acesso às configurações e painel administrativo."""
+    user_clean = creds.username.strip().lower()
+    if (user_clean in ["admin", "prefeitura"]) and creds.password == "admin123":
+        return {
+            "status": "ok",
+            "token": "tc_indoor_auth_valid_session",
+            "user": {
+                "username": creds.username.strip(),
+                "name": "Administrador do Sistema",
+                "role": "admin",
+            },
+        }
+    raise HTTPException(status_code=401, detail="Usuário ou senha incorretos.")
+

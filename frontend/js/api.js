@@ -55,4 +55,9 @@ export const IndoorAPI = {
   deleteRoom: (id) => requestJSON(`/rooms/${id}`, { method: "DELETE" }),
 
   getAdminStats: () => requestJSON("/admin/stats"),
+  login: (username, password) =>
+    requestJSON("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+    }),
 };
